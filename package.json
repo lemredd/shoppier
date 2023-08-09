@@ -9,6 +9,7 @@
 		"template:checkout:detach": "git fetch template react && git checkout template/react",
 		"template:pull": "git -c pull.rebase=false pull template react",
 		"template:merge": "git checkout main && git merge updated_template",
+		"template:recall": "npm run template:remote:add && npm run template:checkout:detach && git branch -D main && git switch -c main",
 		"template:update": "npm run template:remote:add && npm run template:checkout && npm run template:pull && npm run template:merge && npm run template:remote:rm"
 	},
 	"devDependencies": {
