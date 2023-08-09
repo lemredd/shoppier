@@ -36,7 +36,7 @@ module.exports = {
 		"require-await": "error",
 		"semi": [
 			"error",
-			"never"
+			"always"
 		],
 		"no-unused-vars": "off",
 
