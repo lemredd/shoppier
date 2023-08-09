@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"scripts": {
-		"release": "ts-node ./changelog/generate.ts"
+		"release": "ts-node ./changelog/generate.ts",
 
 		"template:remote:add": "git remote add template git@github.com:lemredd/web-template.git",
 		"template:remote:rm": "git remote remove template",
