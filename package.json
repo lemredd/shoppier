@@ -1,6 +1,11 @@
 {
 	"type": "module",
 	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview",
+
 		"release": "ts-node ./changelog/generate.ts",
 
 		"template:remote:add": "git remote add template git@github.com:lemredd/web-template.git",
