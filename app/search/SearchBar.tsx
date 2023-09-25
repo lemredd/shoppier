@@ -14,6 +14,9 @@ export default function SearchBar({ keyword }: Props): React.ReactElement {
 	function handle_submit(event: FormEvent): void {
 		event.preventDefault();
 
+		const form_data = new FormData(event.target as HTMLFormElement);
+		const new_keyword = form_data.get("keyword");
+
 	}
 	return (
 		<form onSubmit={handle_submit}>
