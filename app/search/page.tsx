@@ -1,5 +1,6 @@
 import { PageProps } from "@/.next/types/app/search/page";
 
+import Results from "./Results";
 import SearchBar from "./SearchBar";
 
 interface SearchPageProps extends PageProps {
@@ -22,11 +23,7 @@ export default async function Page({ searchParams }: SearchPageProps): Promise<R
 	return (
 		<>
 			<SearchBar keyword={keyword} />
-			<ul className="results">
-				{products.map((product: Record<string, any>) => (
-					<li key={product.id}>{product.title}</li>
-				))}
-			</ul>
+			<Results keyword={String(keyword)}/>
 		</>
 	);
 }
