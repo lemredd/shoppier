@@ -18,5 +18,8 @@ export async function POST(request: Request): Promise<ReturnType<typeof NextResp
 			})
 		})
 			.then(res => res.json()) as Record<string, any>;
+	const is_valid_credential = Boolean(login_response.id);
+
+	if (!is_valid_credential) return NextResponse.json({ "status": 422, "message": String(login_response.message) });
 	return NextResponse.json(Object.fromEntries(data));
 }
