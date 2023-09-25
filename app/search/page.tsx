@@ -18,8 +18,15 @@ export default async function Page({ searchParams }: SearchPageProps): Promise<R
 	const { products } = await search_products(String(keyword));
 	
 	return (
-		<form>
-			<input type="text" name="keyword" />
-		</form>
+		<>
+			<form>
+				<input type="text" name="keyword" value={keyword} />
+			</form>
+			<ul className="results">
+				{products.map((product: Record<string, any>) => (
+					<li key={product.id}>{product.title}</li>
+				))}
+			</ul>
+		</>
 	);
 }
