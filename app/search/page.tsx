@@ -3,11 +3,10 @@
 import { PageProps } from "@/.next/types/app/search/page";
 
 export default function Page({ searchParams }: PageProps): React.ReactNode {
+	const keyword = searchParams.get("keyword");
 	function submit(): void {
-
+		
 	}
-
-	console.log(searchParams)
 	
 	return (
 		<form onSubmit={submit}>
