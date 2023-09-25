@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 
+import type { EndpointResponse } from "@api/lib/types";
+
 import { API_URL } from "@api/lib/constants";
 
-export async function GET(): Promise<ReturnType<typeof NextResponse["json"]> | Response> {
+export async function GET(): Promise<EndpointResponse> {
 	const data = await fetch(`${API_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as Record<string, any>)
