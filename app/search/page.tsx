@@ -14,7 +14,7 @@ interface SearchPageProps extends PageProps {
 	searchParams: Record<string, string | string[] | undefined>
 }
 
-export default function Page({ searchParams }: SearchPageProps): React.ReactNode {
+export default async function Page({ searchParams }: SearchPageProps): Promise<React.ReactElement> {
 	
 	return (
 		<form>
