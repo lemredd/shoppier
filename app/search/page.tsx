@@ -1,5 +1,7 @@
 import { PageProps } from "@/.next/types/app/search/page";
 
+import SearchBar from "./SearchBar";
+
 interface SearchPageProps extends PageProps {
 	params: Record<"slug", string>
 	searchParams: Record<string, string | string[] | undefined>
@@ -19,9 +21,7 @@ export default async function Page({ searchParams }: SearchPageProps): Promise<R
 	
 	return (
 		<>
-			<form>
-				<input type="text" name="keyword" value={keyword} />
-			</form>
+			<SearchBar keyword={keyword} />
 			<ul className="results">
 				{products.map((product: Record<string, any>) => (
 					<li key={product.id}>{product.title}</li>
