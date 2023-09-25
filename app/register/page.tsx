@@ -12,7 +12,7 @@ export default function Page(): React.ReactNode {
 		}
 
 		const form_data = new FormData(event.target as HTMLFormElement);
-		fetch("/api/login", {
+		fetch("/api/register", {
 			"method": "POST",
 			"body": form_data
 		})

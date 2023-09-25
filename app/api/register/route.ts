@@ -12,6 +12,7 @@ export async function POST(request: Request): Promise<ReturnType<typeof NextResp
 		.then(data => data as Record<string, any>);
 	if (found_user.length) return NextResponse.json({ "status": 400, "message": "User exists." });
 	
+	// TODO: Login after successful register
 	const register_response = await fetch(`${API_URL}/users/add`, {
 		"method": "POST",
 		"headers": { "Content-Type": "application/json" },
