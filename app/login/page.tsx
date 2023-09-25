@@ -9,12 +9,7 @@ export default function Page(): React.ReactNode {
 		const form_data = new FormData(event.target as HTMLFormElement);
 		fetch("/api/login", {
 			"method": "POST",
-			"headers": {
-				"content-type": "application/json"
-			},
-			"body": JSON.stringify({
-				"username": form_data.get("username")
-			})
+			"body": form_data
 		}).catch(console.error);
 	}
 
