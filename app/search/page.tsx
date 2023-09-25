@@ -15,6 +15,8 @@ interface SearchPageProps extends PageProps {
 }
 
 export default async function Page({ searchParams }: SearchPageProps): Promise<React.ReactElement> {
+	const { keyword } = searchParams;
+	const results = await search_products(String(keyword));
 	
 	return (
 		<form>
