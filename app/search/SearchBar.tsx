@@ -12,6 +12,8 @@ export default function SearchBar({ keyword }: Props): React.ReactElement {
 	const router = useRouter();
 
 	function handle_submit(event: FormEvent): void {
+		event.preventDefault();
+
 	}
 	return (
 		<form onSubmit={handle_submit}>
