@@ -1,5 +1,6 @@
 {
 	"type": "module",
+	"version": "0.2.0-dev",
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
@@ -34,6 +35,5 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"vite": "^4.4.5",
 		"@vitejs/plugin-react": "^4.0.4"
-	},
-	"version": "0.1.0"
+	}
 }
