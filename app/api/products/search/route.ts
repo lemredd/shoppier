@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import type { EndpointResponse } from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
+import { ProductsList } from "@/app/lib/types";
 
 export async function GET(request: Request): Promise<EndpointResponse> {
 	const url = new URL(request.url);
@@ -12,6 +13,6 @@ export async function GET(request: Request): Promise<EndpointResponse> {
 
 	const response = await fetch(`${API_URL}/products/search?q=${keyword}`)
 		.then(res => res.json())
-		.then(data => data as Record<string, any>);
+		.then(data => data as ProductsList);
 	return NextResponse.json(response);
 }

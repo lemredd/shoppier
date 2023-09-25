@@ -8,7 +8,6 @@ interface Props {
 	keyword: string
 }
 
-
 export default function Results({ keyword }: Props): React.ReactElement {
 	const [products, set_products] = useState<Product[]>([]);
 	
