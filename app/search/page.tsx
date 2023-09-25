@@ -1,7 +1,13 @@
 export default function Page(): React.ReactNode {
+	function submit(): void {
+
+	}
+
+	console.log(searchParams)
+	
 	return (
-		<main>
-			root page
-		</main>
+		<form onSubmit={submit}>
+			<input type="text" name="keyword" />
+		</form>
 	);
 }
