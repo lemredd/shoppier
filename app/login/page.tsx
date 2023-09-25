@@ -14,8 +14,10 @@ export default function Page(): React.ReactNode {
 	}
 
 	return (
-		<form onSubmit={submit}>
+		<form onSubmit={submit} method="POST">
 			<input type="text" name="username" />
+			<input type="password" name="password" />
+			<input type="submit" value="Submit" />
 		</form>
 	);
 }
