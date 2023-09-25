@@ -1,5 +1,3 @@
-"use client";
-
 import { PageProps } from "@/.next/types/app/search/page";
 
 async function search_products<T extends Record<string, any>>(keyword: string): Promise<T> {
@@ -11,14 +9,15 @@ async function search_products<T extends Record<string, any>>(keyword: string): 
 	return products as T;
 }
 
-export default function Page({ searchParams }: PageProps): React.ReactNode {
-	const keyword = searchParams.get("keyword");
-	function submit(): void {
-		
-	}
+interface SearchPageProps extends PageProps {
+	params: Record<"slug", string>
+	searchParams: Record<string, string | string[] | undefined>
+}
+
+export default function Page({ searchParams }: SearchPageProps): React.ReactNode {
 	
 	return (
-		<form onSubmit={submit}>
+		<form>
 			<input type="text" name="keyword" />
 		</form>
 	);
