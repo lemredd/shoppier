@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
+import type { ProductsList } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
-import { ProductsList } from "@/app/lib/types";
 
 export async function GET(request: Request): Promise<EndpointResponse> {
 	const url = new URL(request.url);
