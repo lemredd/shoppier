@@ -15,7 +15,7 @@ async function search_products<T extends Record<string, any>>(keyword: string): 
 
 export default async function Page({ searchParams }: SearchPageProps): Promise<React.ReactElement> {
 	const { keyword } = searchParams;
-	const results = await search_products(String(keyword));
+	const { products } = await search_products(String(keyword));
 	
 	return (
 		<form>
