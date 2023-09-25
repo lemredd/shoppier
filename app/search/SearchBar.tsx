@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import type { FormEvent } from "react";
 
 interface Props {
@@ -7,6 +9,8 @@ interface Props {
 }
 
 export default function SearchBar({ keyword }: Props): React.ReactElement {
+	const router = useRouter();
+
 	function handle_submit(event: FormEvent): void {
 	}
 	return (
