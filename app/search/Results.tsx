@@ -11,6 +11,8 @@ export default function Results({ keyword }: Props): React.ReactElement {
 	
 	useEffect(() => {
 		async function search_products<T extends Record<string, any>>(): Promise<T>{
+			//TODO: handle possible errors!
+			//i.e. example in https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#fetching-data-on-the-server-with-fetch
 			const response =  await fetch(`/api/products/search?keyword=${keyword}`);
 			const result = await response.json() as T;
 
