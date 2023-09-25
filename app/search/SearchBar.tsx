@@ -17,7 +17,7 @@ export default function SearchBar({ keyword }: Props): React.ReactElement {
 		const form_data = new FormData(event.target as HTMLFormElement);
 		const new_keyword = form_data.get("keyword");
 
-		router.push(`/search?${String(new_keyword)}`).catch(console.error);
+		router.push(`/search?keyword=${String(new_keyword)}`);
 	}
 
 	return (
