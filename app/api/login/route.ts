@@ -7,5 +7,16 @@ export async function POST(request: Request): Promise<ReturnType<typeof NextResp
 	const username = data.get("username"); // TODO: validate manually or with 3rd party validator (i.e. Zod, Valibot)
 	const password = data.get("password"); // TODO: validate manually or with 3rd party validator (i.e. Zod, Valibot)
 
+	const login_response = 
+		fetch(`${API_URL}/auth/login`, {
+			"method": "POST",
+			"headers": { "Content-Type": "application/json" },
+			"body": JSON.stringify({
+				username,
+				password,
+				// expiresInMins: 60, // optional
+			})
+		})
+			.then(res => res.json()) as Record<string, any>;
 	return NextResponse.json(Object.fromEntries(data));
 }
