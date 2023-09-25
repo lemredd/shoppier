@@ -22,5 +22,5 @@ export async function POST(request: Request): Promise<ReturnType<typeof NextResp
 	const is_valid_credential = Boolean(login_response.id);
 
 	if (!is_valid_credential) return NextResponse.json({ "status": 422, "message": String(login_response.message) });
-	return NextResponse.json(Object.fromEntries(data));
-}
+	return NextResponse.json(login_response);
+;}
