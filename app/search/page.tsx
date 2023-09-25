@@ -1,4 +1,8 @@
-export default function Page(): React.ReactNode {
+"use client";
+
+import { PageProps } from "@/.next/types/app/search/page";
+
+export default function Page({ searchParams }: PageProps): React.ReactNode {
 	function submit(): void {
 
 	}
