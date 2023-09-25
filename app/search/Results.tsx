@@ -2,30 +2,10 @@
 
 import { useEffect, useState } from "react";
 
+import type { Product, ProductsList } from "@app/lib/types";
+
 interface Props {
 	keyword: string
-}
-
-interface Product extends Record<string, any> {
-	id: number
-	title: string
-	description: string
-	price: number
-	discountPercentage: number
-	rating: number
-	stock: number
-	brand: string
-	category: string
-	thumbnail: string
-	images: Array<string>
-}
-
-
-interface ProductsList extends Record<string, any> {
-	products: Product[]
-	total: number
-	skip: number
-	limit: number
 }
 
 
