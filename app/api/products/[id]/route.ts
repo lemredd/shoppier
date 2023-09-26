@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 
 import type { Product } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
-import type { ProductCreationFormEntries as ProductModificationFormEntries } from "@api/lib/types";
+import {
+	product_creation_schema as product_modification_schema,
+	type ProductCreationFormEntries as ProductModificationFormEntries
+} from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
 
@@ -31,11 +34,22 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 	const form_data = await request.formData();
 	const entries = Object.fromEntries(form_data) as ProductModificationFormEntries;
 
+	try {
+		product_modification_schema.parse(entries);
+	} catch (e) {
+		return NextResponse.json(e, { "status": 422 });
+	}
+
 	const data = await fetch(`${API_URL}/products/${id}`, {
 		"method": "PATCH",
 		"headers": { "content-type": "application/json" },
-		// TODO: allow inclusion of images. Before that, store these mock data in a real database
-		"body": JSON.stringify({ ...entries } satisfies ProductModificationFormEntries)
+		"body": JSON.stringify({
+			// TODO: allow inclusion of images. Before that, store these mock data in a real database
+			...entries,
+			// Despite not being type restricted, the fake API has both properties below set as `number` initially.
+			"price": Number(entries.price),
+			"stock": Number(entries.stock)
+		})
 	})
 		.then(res => res.json())
 		.then(data => data as Product)

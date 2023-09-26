@@ -22,8 +22,13 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	const data = await fetch(`${API_URL}/products/add`, {
 		"method": "POST",
 		"headers": { "content-type": "application/json" },
-		// TODO: allow inclusion of images. Before that, store these mock data in a real database
-		"body": JSON.stringify({ ...entries })
+		"body": JSON.stringify({
+			// TODO: allow inclusion of images. Before that, store these mock data in a real database
+			...entries,
+			// Despite not being type restricted, the fake API has both properties below set as `number` initially.
+			"price": Number(entries.price),
+			"stock": Number(entries.stock)
+		})
 	})
 		.then(res => res.json())
 		.then(data => data as Product)
