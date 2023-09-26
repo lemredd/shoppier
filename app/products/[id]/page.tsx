@@ -7,7 +7,7 @@ export default function Page({ params }: PageProps): React.ReactNode {
 	
 	return (
 		<main>
-			 page
+			page
 		</main>
 	);
 }
