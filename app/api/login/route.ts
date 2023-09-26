@@ -22,6 +22,6 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		.then(data => data as Record<string, any>);
 	const is_valid_credential = Boolean(login_response.id);
 
-	if (!is_valid_credential) return NextResponse.json({ "status": 422, "message": String(login_response.message) });
+	if (!is_valid_credential) return NextResponse.json(String(login_response.message), { "status": 422 });
 	return NextResponse.json(login_response);
 }
