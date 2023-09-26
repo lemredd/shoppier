@@ -8,7 +8,7 @@ import { API_URL } from "@api/lib/constants";
 const login_schema = object({
 	// TODO: accept email or username, though this feature is not implemented by the fake API used in this project.
 	"username": string(),
-	"password": string().min(8, "Password should be 8 characters long.")
+	"password": string()
 });
 
 type LoginFormEntries = output<typeof login_schema>;
