@@ -1,8 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import type { Product } from "@/app/lib/types";
+
+import get_product from "@app/products/lib/get_product";
 
 interface PageProps {
 	params: Record<"id", number>
@@ -12,6 +14,11 @@ export default function Page({ params }: PageProps): React.ReactNode {
 	const { id } = params;
 
 	const [product, set_product] = useState<Product>();
+	useEffect(() => {
+		get_product(id)
+			.then(set_product)
+			.catch(console.error);
+	}, [id]);
 
 	function submit(event: FormEvent): void {
 		event.preventDefault();

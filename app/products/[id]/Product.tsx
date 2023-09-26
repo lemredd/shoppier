@@ -13,7 +13,6 @@ interface Props {
 export default function Product({ id }: Props): React.ReactNode {
 	const [product, set_product] = useState<Product>();
 
-
 	useEffect(() => {
 		get_product(id)
 			.then(set_product)
