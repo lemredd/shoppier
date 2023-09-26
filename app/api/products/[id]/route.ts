@@ -26,7 +26,6 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
 	const { id } = context.params;
-	console.log("from server:", id, isNaN(id));
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const form_data = await request.formData();
@@ -38,6 +37,18 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 		// TODO: allow inclusion of images. Before that, store these mock data in a real database
 		"body": JSON.stringify({ ...entries } satisfies RequiredProductModificationProps)
 	})
+		.then(res => res.json())
+		.then(data => data as Product)
+		.catch(console.error);
+	
+	return NextResponse.json(data);
+}
+
+export async function DELETE(request: Request, context: Context): Promise<EndpointResponse> {
+	const { id } = context.params;
+	if (isNaN(id)) return respond_if_invalid_id();
+
+	const data = await fetch(`${API_URL}/products/${id}`, { "method": "DELETE" })
 		.then(res => res.json())
 		.then(data => data as Product)
 		.catch(console.error);
