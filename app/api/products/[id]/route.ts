@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import type { Product } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
-import type { RequiredProductCreationProps as RequiredProductModificationProps } from "@api/lib/types";
+import type { ProductCreationFormEntries as ProductModificationFormEntries } from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
 
@@ -29,13 +29,13 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const form_data = await request.formData();
-	const entries = Object.fromEntries(form_data) as RequiredProductModificationProps;// TODO: validate!!!;
+	const entries = Object.fromEntries(form_data) as ProductModificationFormEntries;
 
 	const data = await fetch(`${API_URL}/products/${id}`, {
 		"method": "PATCH",
 		"headers": { "content-type": "application/json" },
 		// TODO: allow inclusion of images. Before that, store these mock data in a real database
-		"body": JSON.stringify({ ...entries } satisfies RequiredProductModificationProps)
+		"body": JSON.stringify({ ...entries } satisfies ProductModificationFormEntries)
 	})
 		.then(res => res.json())
 		.then(data => data as Product)
@@ -44,7 +44,7 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 	return NextResponse.json(data);
 }
 
-export async function DELETE(request: Request, context: Context): Promise<EndpointResponse> {
+export async function DELETE(_request: Request, context: Context): Promise<EndpointResponse> {
 	const { id } = context.params;
 	if (isNaN(id)) return respond_if_invalid_id();
 
