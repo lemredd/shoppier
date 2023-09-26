@@ -1,14 +1,11 @@
-import { PageProps } from "@/.next/types/app/search/page";
-
 import Results from "./Results";
 import SearchBar from "./SearchBar";
 
-interface SearchPageProps extends PageProps {
-	params: Record<"slug", string>
+interface PageProps {
 	searchParams: Record<string, string | string[] | undefined>
 }
 
-export default function Page({ searchParams }: SearchPageProps): React.ReactElement {
+export default function Page({ searchParams }: PageProps): React.ReactElement {
 	const { keyword } = searchParams;
 
 	return (
