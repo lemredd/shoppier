@@ -40,7 +40,7 @@ export default function Page({ params }: PageProps): React.ReactNode {
 
 	// TODO: suspense form!
 	return (
-		<form onSubmit={submit} method="POST" style={{ "display": "flex", "flex-direction": "column", "gap": "1em" }}>
+		<form onSubmit={submit} method="PATCH" style={{ "display": "flex", "flex-direction": "column", "gap": "1em" }}>
 			{/* TODO: use atomic CSS Library */}
 			<label htmlFor="title">
 				title
