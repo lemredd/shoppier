@@ -10,10 +10,11 @@ interface Context {
 	params: { id: number }
 }
 
-export async function GET(_request: Request, context: Context): Promise<EndpointResponse> {
-	const id = context.params.id;
+const respond_if_invalid_id = (): EndpointResponse => NextResponse.json("Please provide a valid id.", { "status": 422 });
 
-	if (isNaN(id)) return new Response("Please provide a valid id.");
+export async function GET(_request: Request, context: Context): Promise<EndpointResponse> {
+	const { id } = context.params;
+	if (isNaN(id)) respond_if_invalid_id();
 
 	const data = await fetch(`${API_URL}/products/${id}`)
 		.then(res => res.json())
