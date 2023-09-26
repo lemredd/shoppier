@@ -40,29 +40,31 @@ export default function Page({ params }: PageProps): React.ReactNode {
 
 	// TODO: suspense form!
 	return (
-		<form onSubmit={submit} method="PATCH" style={{ "display": "flex", "flex-direction": "column", "gap": "1em" }}>
-			{/* TODO: use atomic CSS Library */}
-			<label htmlFor="title">
-				title
-				<input type="text" id="title" name="title" defaultValue={product?.title} />
-			</label>
-			<label htmlFor="brand">
-				brand
-				<input type="text" id="brand" name="brand" defaultValue={product?.brand} />
-			</label>
-			<label htmlFor="price">
-				price
-				<input type="text" id="price" name="price" defaultValue={product?.price} />
-			</label>
-			<label htmlFor="stock">
-				stock
-				<input type="text" id="stock" name="stock" defaultValue={product?.stock} />
-			</label>
-			<label htmlFor="description">
-				description
-				<input type="text" id="description" name="description" defaultValue={product?.description} />
-			</label>
-			<input type="submit" value="Submit" />
-		</form>
+		<>
+			<form onSubmit={submit} method="PATCH" style={{ "display": "flex", "flex-direction": "column", "gap": "1em" }}>
+				{/* TODO: use atomic CSS Library */}
+				<label htmlFor="title">
+					title
+					<input type="text" id="title" name="title" defaultValue={product?.title} />
+				</label>
+				<label htmlFor="brand">
+					brand
+					<input type="text" id="brand" name="brand" defaultValue={product?.brand} />
+				</label>
+				<label htmlFor="price">
+					price
+					<input type="text" id="price" name="price" defaultValue={product?.price} />
+				</label>
+				<label htmlFor="stock">
+					stock
+					<input type="text" id="stock" name="stock" defaultValue={product?.stock} />
+				</label>
+				<label htmlFor="description">
+					description
+					<input type="text" id="description" name="description" defaultValue={product?.description} />
+				</label>
+				<input type="submit" value="Submit" />
+			</form>
+		</>
 	);
 }
