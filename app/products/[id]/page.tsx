@@ -1,5 +1,5 @@
 interface PageProps {
-	params: Record<string, string>
+	params: Record<"id", number>
 }
 
 export default function Page({ params }: PageProps): React.ReactNode {
