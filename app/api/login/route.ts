@@ -1,20 +1,33 @@
+import { object, output, string } from "zod";
 import { NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
 
+const login_schema = object({
+	// TODO: accept email or username, though this feature is not implemented by the fake API used in this project.
+	"username": string(),
+	"password": string()
+});
+
+type LoginFormEntries = output<typeof login_schema>;
+
 export async function POST(request: Request): Promise<EndpointResponse> {
-	const data = await request.formData();
-	const username = data.get("username"); // TODO: validate manually or with 3rd party validator (i.e. Zod, Valibot)
-	const password = data.get("password"); // TODO: validate manually or with 3rd party validator (i.e. Zod, Valibot)
+	const form_data = await request.formData();
+	const entries = Object.fromEntries(form_data) as LoginFormEntries;
+
+	try {
+		login_schema.parse(entries);
+	} catch(e) {
+		return NextResponse.json(e, { "status": 422 });
+	}
 
 	const login_response = await fetch(`${API_URL}/auth/login`, {
 		"method": "POST",
 		"headers": { "Content-Type": "application/json" },
 		"body": JSON.stringify({
-			username,
-			password,
+			...entries
 			// expiresInMins: 60, // optional
 		})
 	})

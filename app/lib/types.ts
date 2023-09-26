@@ -1,21 +1,25 @@
-export interface Product extends Record<string, any> {
-	id: number
-	title: string
-	description: string
-	price: number
-	discountPercentage: number
-	rating: number
-	stock: number
-	brand: string
-	category: string
-	thumbnail: string
-	images: Array<string>
-}
+import { object, infer as extract, string, number, array } from "zod";
 
-export interface ProductsList extends Record<string, any> {
-	products: Product[]
-	total: number
-	skip: number
-	limit: number
-}
+export const product_schema = object({
+	"id": number(),
+	"title": string(),
+	"description": string(),
+	"price": number(),
+	"discountPercentage": number(),
+	"rating": number(),
+	"stock": number(),
+	"brand": string(),
+	"category": string(),
+	"thumbnail": string().url(),
+	"images": array(string().url())
+});
 
+const products_list_schema = object({
+	"products": array(product_schema),
+	"total": number(),
+	"skip": number(),
+	"limit": number()
+});
+
+export type Product = extract<typeof product_schema>;
+export type ProductsList = extract<typeof products_list_schema>;
