@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 import type { Product } from "@/app/lib/types";
 
@@ -10,6 +10,8 @@ interface PageProps {
 
 export default function Page({ params }: PageProps): React.ReactNode {
 	const { id } = params;
+
+	const [product, set_product] = useState<Product>();
 
 	function submit(event: FormEvent): void {
 		event.preventDefault();
