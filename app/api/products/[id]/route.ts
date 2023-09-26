@@ -21,3 +21,19 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 
 	return NextResponse.json(data);
 }
+
+export async function PATCH(request: Request): Promise<EndpointResponse> {
+	const form_data = await request.formData();
+	const entries = Object.fromEntries(form_data) as Partial<Product>;// TODO: validate!!!;
+
+	const data = await fetch(`${API_URL}/products/${entries.id}`, {
+		"method": "PATCH",
+		"headers": { "content-type": "application/json" },
+		// TODO: allow inclusion of images. Before that, store these mock data in a real database
+		"body": JSON.stringify({ ...entries } satisfies RequiredProductCreationProps)
+	})
+		.then(res => res.json())
+		.then(data => data as Product)
+		.catch(console.error);
+	return NextResponse.json(data);
+}
