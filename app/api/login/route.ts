@@ -24,8 +24,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		"method": "POST",
 		"headers": { "Content-Type": "application/json" },
 		"body": JSON.stringify({
-			username,
-			password,
+			...entries
 			// expiresInMins: 60, // optional
 		})
 	})
