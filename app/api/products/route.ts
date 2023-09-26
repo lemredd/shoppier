@@ -15,11 +15,15 @@ interface RequiredProductCreationProps extends Partial<Product> {
 
 export async function POST(request: Request): Promise<EndpointResponse> {
 	const form_data = await request.formData();
-	const entries = Object.fromEntries(form_data) as RequiredProductCreationProps // TODO: validate!!!;
+	const entries = Object.fromEntries(form_data) as RequiredProductCreationProps; // TODO: validate!!!;
 
-	const data = await fetch(`${API_URL}/users`)
+	const data = await fetch(`${API_URL}/products/add`, {
+		"method": "POST",
+		"headers": { "content-type": "application/json" },
+		"body": JSON.stringify({ ...entries } satisfies RequiredProductCreationProps)
+	})
 		.then(res => res.json())
-		.then(data => data as Record<string, any>)
+		.then(data => data as Product)
 		.catch(console.error);
 	return NextResponse.json(data);
 }
