@@ -11,7 +11,14 @@ const login_schema = object({
 });
 
 export async function POST(request: Request): Promise<EndpointResponse> {
-	const data = await request.formData();
+	const form_data = await request.formData();
+	const entries = Object.fromEntries(form_data);
+
+	try {
+		login_schema.parse(entries);
+	} catch(e) {
+		return NextResponse.json(e, { "status": 422 });
+	}
 
 	const login_response = await fetch(`${API_URL}/auth/login`, {
 		"method": "POST",
