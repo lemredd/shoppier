@@ -72,6 +72,9 @@ export default function Page({ params }: PageProps): React.ReactNode {
 				</label>
 				<input type="submit" value="Submit" />
 			</form>
+			<button type="button" onClick={(): void => set_is_deleting(true)}>
+				Delete
+			</button>
 		</>
 	);
 }
