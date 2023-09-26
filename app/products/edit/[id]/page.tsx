@@ -38,6 +38,7 @@ export default function Page({ params }: PageProps): React.ReactNode {
 			.catch(console.error);
 	}
 
+	const [is_deleting, set_is_deleting] = useState<boolean>(false);
 	// TODO: suspense form!
 	return (
 		<>
