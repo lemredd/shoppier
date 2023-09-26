@@ -24,9 +24,13 @@ export default function Page(): React.ReactNode {
 	}
 
 	return (
-		<form onSubmit={submit} method="POST">
-			<input type="text" name="username" />
-			<input type="password" name="password" />
+		<form onSubmit={submit} method="POST" style={{ "display": "flex", "flex-direction": "column", "gap": "1em" }}>
+			{/* TODO: use atomic CSS Library */}
+			<label htmlFor="title">title<input type="text" id="title" name="title" /></label>
+			<label htmlFor="brand">brand<input type="text" id="brand" name="brand" /></label>
+			<label htmlFor="price">price<input type="text" id="price" name="price" /></label>
+			<label htmlFor="stock">stock<input type="text" id="stock" name="stock" /></label>
+			<label htmlFor="description">description<input type="text" id="description" name="description" /></label>
 			<input type="submit" value="Submit" />
 		</form>
 	);
