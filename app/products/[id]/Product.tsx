@@ -26,7 +26,11 @@ export default function Product({ id }: Props): React.ReactNode {
 
 	return (
 		<>
-			{product}
+			{/*
+			* TODO: wrap with semantic HTML
+			* TODO: Display the rest of product details
+			*/}
+			{product?.title}
 		</>
 	);
 }
