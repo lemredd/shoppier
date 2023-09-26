@@ -12,13 +12,12 @@ interface Props {
 export default function ProductForm({ product, method }: Props): React.ReactElement {
 	function submit(event: FormEvent): void {
 		event.preventDefault();
+		const form_data = new FormData(event.target as HTMLFormElement);
 
 		function handle_data(data: Product): void {
 			console.log(data);
 		}
-
-		const form_data = new FormData(event.target as HTMLFormElement);
-		fetch(`/api/products/${product?.id}`, {
+		fetch(`/api/products${method === "PATCH" ? `/${product?.id}` : ""}`, {
 			method,
 			"body": form_data
 		})
