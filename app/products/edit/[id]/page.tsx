@@ -39,6 +39,12 @@ export default function Page({ params }: PageProps): React.ReactNode {
 	}
 
 	const [is_deleting, set_is_deleting] = useState<boolean>(false);
+	function delete_product(): void {
+		fetch(`/api/products/${id}`, { "method": "DELETE" })
+			.then(() => set_is_deleting(false))
+			.catch(console.error);
+	}
+
 	// TODO: suspense form!
 	return (
 		<>
