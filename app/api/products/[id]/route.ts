@@ -14,7 +14,7 @@ const respond_if_invalid_id = (): EndpointResponse => NextResponse.json("Please 
 
 export async function GET(_request: Request, context: Context): Promise<EndpointResponse> {
 	const { id } = context.params;
-	if (isNaN(id)) respond_if_invalid_id();
+	if (isNaN(id)) return respond_if_invalid_id();
 
 	const data = await fetch(`${API_URL}/products/${id}`)
 		.then(res => res.json())
@@ -26,7 +26,8 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
 	const { id } = context.params;
-	if (isNaN(id)) respond_if_invalid_id();
+	console.log("from server:", id, isNaN(id));
+	if (isNaN(id)) return respond_if_invalid_id();
 
 	const form_data = await request.formData();
 	const entries = Object.fromEntries(form_data) as RequiredProductModificationProps;// TODO: validate!!!;
