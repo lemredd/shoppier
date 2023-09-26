@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Product } from "@/app/lib/types";
 
@@ -16,8 +16,17 @@ async function get_product<T extends Product>(id: number): Promise<T> {
 
 export default function Product({ id }: Props): React.ReactNode {
 	const [product, set_product] = useState<Product>();
+
+
+	useEffect(() => {
+		get_product(id)
+			.then(set_product)
+			.catch(console.error);
+	}, [id]);
+
 	return (
 		<>
+			{product}
 		</>
 	);
 }
