@@ -19,7 +19,6 @@ export default function Page({ params }: PageProps): React.ReactNode {
 			.then(set_product)
 			.catch(console.error);
 	}, [id]);
-
 	function submit(event: FormEvent): void {
 		event.preventDefault();
 
@@ -75,6 +74,13 @@ export default function Page({ params }: PageProps): React.ReactNode {
 			<button type="button" onClick={(): void => set_is_deleting(true)}>
 				Delete
 			</button>
+			{is_deleting && (
+				<dialog open={is_deleting}>
+					Are you sure?
+					<button type="button" onClick={delete_product}>Yes</button>
+					<button type="button" onClick={(): void => set_is_deleting(false)}>no</button>
+				</dialog>
+			)}
 		</>
 	);
 }
