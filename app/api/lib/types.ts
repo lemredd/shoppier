@@ -5,7 +5,7 @@ import { product_schema } from "@/app/lib/types";
 
 export type EndpointResponse = ReturnType<typeof NextResponse["json"]> | Response
 
-const product_creation_schema = product_schema.pick({
+export const product_creation_schema = product_schema.pick({
 	"title": true,
 	"brand": true,
 	"price": true,
