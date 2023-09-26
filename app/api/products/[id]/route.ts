@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import type { Product } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
+import type { RequiredProductCreationProps as RequiredProductModificationProps } from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
 
@@ -24,13 +25,13 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 
 export async function PATCH(request: Request): Promise<EndpointResponse> {
 	const form_data = await request.formData();
-	const entries = Object.fromEntries(form_data) as Partial<Product>;// TODO: validate!!!;
+	const entries = Object.fromEntries(form_data) as RequiredProductModificationProps;// TODO: validate!!!;
 
 	const data = await fetch(`${API_URL}/products/${entries.id}`, {
 		"method": "PATCH",
 		"headers": { "content-type": "application/json" },
 		// TODO: allow inclusion of images. Before that, store these mock data in a real database
-		"body": JSON.stringify({ ...entries } satisfies RequiredProductCreationProps)
+		"body": JSON.stringify({ ...entries } satisfies RequiredProductModificationProps)
 	})
 		.then(res => res.json())
 		.then(data => data as Product)
