@@ -40,11 +40,11 @@ export default function ProductForm({ product, method }: Props): React.ReactElem
 			</label>
 			<label htmlFor="price">
 				price
-				<input type="text" id="price" name="price" defaultValue={product?.price} />
+				<input type="text" inputMode="numeric" pattern="\d*" id="price" name="price" defaultValue={product?.price} />
 			</label>
 			<label htmlFor="stock">
 				stock
-				<input type="text" id="stock" name="stock" defaultValue={product?.stock} />
+				<input type="text" inputMode="numeric" pattern="\d*" id="stock" name="stock" defaultValue={product?.stock} />
 			</label>
 			<label htmlFor="description">
 				description
