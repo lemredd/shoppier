@@ -7,7 +7,7 @@ import { API_URL } from "@api/lib/constants";
 
 const login_schema = object({
 	"username": string(),
-	"password": string().min(8)
+	"password": string().min(8, "Password should be 8 letters long.")
 });
 
 export async function POST(request: Request): Promise<EndpointResponse> {
