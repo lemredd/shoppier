@@ -14,13 +14,12 @@ export const product_schema = object({
 	"images": array(string().url())
 });
 
-
-const product_list_schema = object({
-	"product": array(product_schema),
+const products_list_schema = object({
+	"products": array(product_schema),
 	"total": number(),
 	"skip": number(),
 	"limit": number()
 });
 
 export type Product = extract<typeof product_schema>;
-export type ProductList = extract<typeof product_list_schema>;
+export type ProductsList = extract<typeof products_list_schema>;
