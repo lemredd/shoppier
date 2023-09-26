@@ -7,8 +7,7 @@ export default function Page(): React.ReactNode {
 		event.preventDefault();
 
 		function handle_data(data: Record<string, any>): void {
-			if (data.status === 422) console.error(data.message); // TODO: show error on UI
-			else localStorage.setItem("user", JSON.stringify(data)); // TODO: `router.push` to home
+			localStorage.setItem("user", JSON.stringify(data)); // TODO: `router.push` to home
 		}
 
 		const form_data = new FormData(event.target as HTMLFormElement);
@@ -18,7 +17,7 @@ export default function Page(): React.ReactNode {
 		})
 			.then(response => response.json())
 			.then(handle_data)
-			.catch(console.error);
+			.catch(console.error); // TODO: show error on UI
 	}
 
 	return (

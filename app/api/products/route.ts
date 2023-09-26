@@ -1,17 +1,9 @@
 import { NextResponse } from "next/server";
 
 import type { Product } from "@/app/lib/types";
-import type { EndpointResponse } from "@api/lib/types";
+import type { EndpointResponse, RequiredProductCreationProps } from "@api/lib/types";
 
 import { API_URL } from "@api/lib/constants";
-
-interface RequiredProductCreationProps extends Partial<Product> {
-	title: string
-	brand: string
-	price: number
-	stock: number
-	description: string
-}
 
 export async function POST(request: Request): Promise<EndpointResponse> {
 	const form_data = await request.formData();
@@ -20,6 +12,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	const data = await fetch(`${API_URL}/products/add`, {
 		"method": "POST",
 		"headers": { "content-type": "application/json" },
+		// TODO: allow inclusion of images. Before that, store these mock data in a real database
 		"body": JSON.stringify({ ...entries } satisfies RequiredProductCreationProps)
 	})
 		.then(res => res.json())
