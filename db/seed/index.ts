@@ -26,19 +26,9 @@ interface FakeUser {
 }
 
 async function main(): Promise<void> {
-	// TODO: fetch from `FAKE_API_URL` and seed!
-	await prisma.user.create({
-		"data": {
-			"email": "foo@email.com",
-			"username": "user",
-			"password": "password",
-			"address": {
-				"create": {
-					"address": "Foo Bar Baz St",
-					"city": "Foo City",
-					"postal_code": 123,
-					"country": "Foo",
-				}
+	const fake_users = await fetch(`${FAKE_USERS_API_URL}/users`)
+		.then(res => res.json())
+		.then(data => data as FakeUser[]);
 			}
 		}
 	});
