@@ -42,7 +42,7 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			username,
 			name,
 			phone,
-			"password": "password"
+			"password": "password" // TODO: encrypt
 		};
 		const address_creation = {
 			"create": { ...address_to_use as typeof address, "country": "PH" }
