@@ -29,8 +29,16 @@ async function main(): Promise<void> {
 	const fake_users = await fetch(`${FAKE_USERS_API_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as FakeUser[]);
+	fake_users.forEach(({
+		username,
+		name,
+		phone,
+		email,
+		address
+	}) => {
 			}
 		}
+		}).catch(console.error);
 	});
 	const all_users = await prisma.user.findMany({ "include": { "address": true } });
 	console.log(all_users);
