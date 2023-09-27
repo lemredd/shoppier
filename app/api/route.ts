@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
-import { SERVER_URL } from "@api/lib/constants";
+import { user_operator } from "@api/lib/operator";
 
 export async function GET(): Promise<EndpointResponse> {
-	const data = await fetch(`${SERVER_URL}/users`)
-		.then(res => res.json())
-		.then(data => data as Record<string, any>)
-		.catch(console.error);
+	const data = await user_operator.findMany({
+		"skip": 0,
+		"take": 3
+	});
 	return NextResponse.json(data);
 }
