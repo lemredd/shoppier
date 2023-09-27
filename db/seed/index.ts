@@ -3,7 +3,22 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
-	const all_users = await prisma.user.findMany();
+	await prisma.user.create({
+		"data": {
+			"email": "foo@email.com",
+			"username": "user",
+			"password": "password",
+			"address": {
+				"create": {
+					"address": "Foo Bar Baz St",
+					"city": "Foo City",
+					"postal_code": 123,
+					"country": "Foo",
+				}
+			}
+		}
+	});
+	const all_users = await prisma.user.findMany({ "include": { "address": true } });
 	console.log(all_users);
 }
 
