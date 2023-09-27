@@ -19,9 +19,15 @@ model User {
 }
 
 model Product {
-  id       Int     @id @default(autoincrement())
-  title     String?
-  stock    Int
-  Brand String
-  Description String
+  id                 Int    @id @default(autoincrement())
+  title              String
+  Description        String
+  Brand              String
+  stock              Int
+  price              Int
+  discountPercentage Int
+  rating             Int
+  category           String
+  thumbnail          String
+  images             String
 }
