@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { SERVER_URL } from "@api/lib/constants";
 
 const login_schema = object({
 	// TODO: accept email or username, though this feature is not implemented by the fake API used in this project.
@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const login_response = await fetch(`${FAKE_API_URL}/auth/login`, {
+	const login_response = await fetch(`${SERVER_URL}/auth/login`, {
 		"method": "POST",
 		"headers": { "Content-Type": "application/json" },
 		"body": JSON.stringify({

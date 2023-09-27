@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { SERVER_URL } from "@api/lib/constants";
 
 export async function GET(): Promise<EndpointResponse> {
-	const data = await fetch(`${FAKE_API_URL}/users`)
+	const data = await fetch(`${SERVER_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as Record<string, any>)
 		.catch(console.error);

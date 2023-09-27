@@ -7,7 +7,7 @@ import {
 	type ProductCreationFormEntries
 } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { SERVER_URL } from "@api/lib/constants";
 
 export async function POST(request: Request): Promise<EndpointResponse> {
 	const form_data = await request.formData();
@@ -19,7 +19,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const data = await fetch(`${FAKE_API_URL}/products/add`, {
+	const data = await fetch(`${SERVER_URL}/products/add`, {
 		"method": "POST",
 		"headers": { "content-type": "application/json" },
 		"body": JSON.stringify({

@@ -7,7 +7,7 @@ import {
 	type ProductCreationFormEntries as ProductModificationFormEntries
 } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { SERVER_URL } from "@api/lib/constants";
 
 interface Context {
 	params: { id: number }
@@ -19,7 +19,7 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 	const { id } = context.params;
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const data = await fetch(`${FAKE_API_URL}/products/${id}`)
+	const data = await fetch(`${SERVER_URL}/products/${id}`)
 		.then(res => res.json())
 		.then(data => data as Product)
 		.catch(console.error);
@@ -40,7 +40,7 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const data = await fetch(`${FAKE_API_URL}/products/${id}`, {
+	const data = await fetch(`${SERVER_URL}/products/${id}`, {
 		"method": "PATCH",
 		"headers": { "content-type": "application/json" },
 		"body": JSON.stringify({
@@ -62,7 +62,7 @@ export async function DELETE(_request: Request, context: Context): Promise<Endpo
 	const { id } = context.params;
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const data = await fetch(`${FAKE_API_URL}/products/${id}`, { "method": "DELETE" })
+	const data = await fetch(`${SERVER_URL}/products/${id}`, { "method": "DELETE" })
 		.then(res => res.json())
 		.then(data => data as Product)
 		.catch(console.error);
