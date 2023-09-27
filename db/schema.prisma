@@ -11,12 +11,12 @@ datasource db {
 }
 
 model Address {
-  id          Int    @id @default(autoincrement())
-  address     String
-  city        String
-  postal_code Int
-  country     String
-  User        User[]
+  id      Int    @id @default(autoincrement())
+  street  String
+  suite   String
+  city    String
+  zipcode String
+  country String
 }
 
 model User {
