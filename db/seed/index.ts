@@ -29,6 +29,7 @@ async function main(): Promise<void> {
 	const fake_users = await fetch(`${FAKE_USERS_API_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as FakeUser[]);
+	
 	fake_users.forEach(({
 		username,
 		name,
@@ -38,20 +39,22 @@ async function main(): Promise<void> {
 	}) => {
 		const address_to_use: Partial<typeof address> = address;
 		delete address_to_use.geo;
+		const user = {
+			email,
+			username,
+			name,
+			phone,
+			"password": "password"
+		};
+		const address_creation = {
+			"create": { ...address_to_use as typeof address, "country": "PH" }
+		};
+
 		prisma.user.create({
-			"data": {
-				email,
-				username,
-				name,
-				phone,
-				"address": { "create": {
-					...address_to_use as typeof address,
-					"country": "PH"
-				} },
-				"password": "password"
-			}
+			"data": { ...user,"address": address_creation }
 		}).catch(console.error);
 	});
+
 	const all_users = await prisma.user.findMany({ "include": { "address": true } });
 	console.log(all_users);
 }
