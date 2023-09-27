@@ -11,8 +11,8 @@ import { SERVER_URL } from "@api/lib/constants";
 // TODO: find a fix for this. Should just `Omit` `username, password` from `Prisma.UserCreateInput`
 const register_form_entries_schema = object({
 	"username": string(),
-	"password": string(),
-	"confirm_password": string()
+	"password": string().min(8, "Password should be at least 8 characters long."),
+	"confirm_password": string().min(8, "Password should be at least 8 characters long.")
 });
 
 type RegisterFormEntries = extract<typeof register_form_entries_schema>
