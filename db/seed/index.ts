@@ -4,6 +4,27 @@ const { FAKE_USERS_API_URL } = process.env;
 
 const prisma = new PrismaClient();
 
+interface FakeUser {
+	// Keys to delete:
+	// - `id`
+	// - `website`
+	// - keys with value type `object`
+	id: number,
+	name: string,
+	username: string,
+	email: string,
+	address: {
+		street: string,
+		suite: string,
+		city: string,
+		zipcode: string,
+		geo: object
+	},
+	phone: string,
+	website: string,
+	company: object
+}
+
 async function main(): Promise<void> {
 	// TODO: fetch from `FAKE_API_URL` and seed!
 	await prisma.user.create({
