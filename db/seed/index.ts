@@ -36,6 +36,8 @@ async function main(): Promise<void> {
 		email,
 		address
 	}) => {
+		const address_to_use: Partial<typeof address> = address;
+		delete address_to_use.geo;
 		prisma.user.create({
 			"data": {
 				email,
@@ -43,7 +45,7 @@ async function main(): Promise<void> {
 				name,
 				phone,
 				"address": { "create": {
-					...address,
+					...address_to_use as typeof address,
 					"country": "PH"
 				} },
 				"password": "password"
