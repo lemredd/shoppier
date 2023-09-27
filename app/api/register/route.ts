@@ -18,9 +18,14 @@ const register_form_entries_schema = object({
 type RegisterFormEntries = extract<typeof register_form_entries_schema>
 
 export async function POST(request: Request): Promise<EndpointResponse> {
-	const data = await request.formData();
-	const username = data.get("username"); // TODO: validate manually or with 3rd party validator (i.e. Zod, Valibot)
-	const password = data.get("password"); // TODO: validate manually or with 3rd party validator (i.e. Zod, Valibot)
+	const form_data = await request.formData();
+	const entries = Object.fromEntries(form_data) as RegisterFormEntries;
+
+	try {
+		register_form_entries_schema.parse(entries);
+	} catch(e) {
+		return NextResponse.json(e, { "status": 422 });
+	}
 
 	const { "users": found_user } = await fetch(`${SERVER_URL}/users/search?q=${String(username)}`)
 		.then(res => res.json())
