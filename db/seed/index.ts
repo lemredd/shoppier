@@ -36,8 +36,18 @@ async function main(): Promise<void> {
 		email,
 		address
 	}) => {
+		prisma.user.create({
+			"data": {
+				email,
+				username,
+				name,
+				phone,
+				"address": { "create": {
+					...address,
+					"country": "PH"
+				} },
+				"password": "password"
 			}
-		}
 		}).catch(console.error);
 	});
 	const all_users = await prisma.user.findMany({ "include": { "address": true } });
