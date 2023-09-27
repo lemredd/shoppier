@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
+const { FAKE_USERS_API_URL } = process.env;
+
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
