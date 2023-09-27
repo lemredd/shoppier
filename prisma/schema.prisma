@@ -10,6 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Address {
+  id          Int    @id @default(autoincrement())
+  address     String
+  city        String
+  postal_code Int
+  country     String
+  User        User[]
+}
+
 model User {
   id       Int     @id @default(autoincrement())
   name     String?
