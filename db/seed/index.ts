@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
+	// TODO: fetch from `FAKE_API_URL` and seed!
 	await prisma.user.create({
 		"data": {
 			"email": "foo@email.com",
