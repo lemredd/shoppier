@@ -18,9 +18,9 @@ interface FakeProduct {
 }
 
 export default async function seed_products(prisma: PrismaClient): Promise<void> {
-	const fake_products = await fetch(`${FAKE_API_URL}/users`)
+	const { "products": fake_products } = await fetch(`${FAKE_API_URL}/products`)
 		.then(res => res.json())
-		.then(data => data as FakeProduct[]);
+		.then(data => data as { products: FakeProduct[] });
 		
 	fake_products.forEach(product => {
 		const product_to_create = product as Partial<FakeProduct>;
