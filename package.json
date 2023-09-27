@@ -39,6 +39,7 @@
 		"zod": "^3.22.2"
 	},
 	"prisma": {
-		"schema": "db/schema.prisma"
+		"schema": "db/schema.prisma",
+		"seed": "ts-node --esm db/seed/index.ts"
 	}
 }

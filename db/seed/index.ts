@@ -1,26 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 
+import seed_users from "./user.js";
+import seed_products from "./product.js";
+
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
-	// TODO: fetch from `FAKE_API_URL` and seed!
-	await prisma.user.create({
-		"data": {
-			"email": "foo@email.com",
-			"username": "user",
-			"password": "password",
-			"address": {
-				"create": {
-					"address": "Foo Bar Baz St",
-					"city": "Foo City",
-					"postal_code": 123,
-					"country": "Foo",
-				}
-			}
-		}
-	});
-	const all_users = await prisma.user.findMany({ "include": { "address": true } });
-	console.log(all_users);
+	await seed_users(prisma);
+	await seed_products(prisma);
 }
 
 main()
