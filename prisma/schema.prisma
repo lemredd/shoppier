@@ -20,18 +20,20 @@ model Address {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  name     String?
-  email    String
-  username String
-  password String
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String
+  username  String
+  password  String
+  address   Address? @relation(fields: [address_id], references: [id])
+  address_id Int?
 }
 
 model Product {
   id                 Int    @id @default(autoincrement())
   title              String
-  Description        String
-  Brand              String
+  description        String
+  brand              String
   stock              Int
   price              Int
   discountPercentage Int
