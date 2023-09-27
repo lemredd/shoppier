@@ -1,7 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 
-// TODO: rename as `FAKE_PRODUCTS_API_URL`
-const { FAKE_API_URL } = process.env;
+const FAKE_API_URL = "https://dummyjson.com";
 
 interface FakeProduct {
 	id: number
