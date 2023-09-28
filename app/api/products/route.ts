@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import type { Product } from "@/app/lib/types";
 import {
 	product_creation_schema,
 	type EndpointResponse,

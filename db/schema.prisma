@@ -41,7 +41,7 @@ model Product {
   price              Int
   discountPercentage Int?
   rating             Int?
-  category           String?
-  thumbnail          String?
-  images             String?
+  category           String? // TODO: make required
+  thumbnail          String? // TODO: make required
+  images             String? // TODO: make required
 }
