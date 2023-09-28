@@ -22,7 +22,7 @@ export default function Page(): React.ReactNode {
 
 	return (
 		<form onSubmit={submit} method="POST">
-			<input type="text" name="username" />
+			<input type="text" name="username_or_email" />
 			<input type="password" name="password" />
 			<input type="submit" value="Submit" />
 		</form>
