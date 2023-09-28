@@ -7,7 +7,7 @@ import { user_operator } from "@api/lib/operator";
 
 // Before you ask why, this is because exported types from the generated `Prisma` namespace aren't recognized.
 // Tested in both Neovim and VSCode/ium. Can't figure out why it just won't recognize them.
-// TODO: find a fix for this. Should just `Pick` `username, password` from `Prisma.UserCreateInput`
+// TODO: find a fix for this. Should just `Pick` `email, password` from `Prisma.UserCreateInput`
 const register_form_entries_schema = object({
 	"email": string().email(),
 	"password": string().min(8, "Password should be at least 8 characters long."),
@@ -33,7 +33,6 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	const response = user_operator.create({
 		"data": {
 			"email": entries.email,
-			"username": entries.email.split("@")[0],
 			"password": entries.password
 		}
 	}).then(
