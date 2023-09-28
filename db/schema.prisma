@@ -39,9 +39,9 @@ model Product {
   brand              String
   stock              Int
   price              Int
-  discountPercentage Int
-  rating             Int
-  category           String
-  thumbnail          String
-  images             String
+  discountPercentage Int?
+  rating             Int?
+  category           String?
+  thumbnail          String?
+  images             String?
 }
