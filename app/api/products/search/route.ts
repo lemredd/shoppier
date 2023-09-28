@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 
-import type { ProductsList } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
 
-import { SERVER_URL } from "@api/lib/constants";
+import { product_operator } from "@api/lib/operator";
 
 export async function GET(request: Request): Promise<EndpointResponse> {
 	const url = new URL(request.url);
@@ -11,8 +10,18 @@ export async function GET(request: Request): Promise<EndpointResponse> {
 
 	if (!keyword) return NextResponse.json({ "products": [] });
 
-	const response = await fetch(`${SERVER_URL}/products/search?q=${keyword}`)
-		.then(res => res.json())
-		.then(data => data as ProductsList);
-	return NextResponse.json(response);
+	// TODO: paginate and include count
+	const response = product_operator.findMany({ "where": {
+		"OR": [
+			{ "title": { "contains": keyword } },
+			{ "brand": { "contains": keyword } },
+			{ "description": { "contains": keyword } },
+			{ "category": { "contains": keyword } }
+		]
+	} }).then(
+		products => NextResponse.json(products)
+	).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	);
+	return await response;
 }
