@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import type { Product } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
 import {
 	product_creation_schema as product_modification_schema,
@@ -66,10 +65,13 @@ export async function DELETE(_request: Request, context: Context): Promise<Endpo
 	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const data = await fetch(`${SERVER_URL}/products/${id}`, { "method": "DELETE" })
-		.then(res => res.json())
-		.then(data => data as Product)
-		.catch(console.error);
+	const response = await product_operator.delete({
+		"where": { id }
+	}).then(
+		product => NextResponse.json(product)
+	).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	);
 	
-	return NextResponse.json(data);
+	return response;
 }
