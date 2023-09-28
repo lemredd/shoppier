@@ -30,10 +30,11 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	// TODO: validate with Zod
+	// TODO: maybe return `409`
 	const response = user_operator.findUnique({
 		"where": { "username": entries.username }
 	})
-		.then(() => NextResponse.json({ "message": "This user already exists." }, { "status": 422 }));
+		.then(() => NextResponse.json({ "message": "This user already exists." }, { "status": 409 }));
 	
 	// TODO: Login after successful register
 	//const register_response = await fetch(`${SERVER_URL}/users/add`, {
