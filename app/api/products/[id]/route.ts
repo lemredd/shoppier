@@ -7,24 +7,30 @@ import {
 	type ProductCreationFormEntries as ProductModificationFormEntries
 } from "@api/lib/types";
 
-import { SERVER_URL } from "@api/lib/constants";
+import { product_operator } from "@api/lib/operator";
 
 interface Context {
 	params: { id: number }
 }
 
-const respond_if_invalid_id = (): EndpointResponse => NextResponse.json("Please provide a valid id.", { "status": 422 });
+const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
+	"Please provide a valid id.",
+	{ "status": 422 }
+);
 
 export async function GET(_request: Request, context: Context): Promise<EndpointResponse> {
 	const { id } = context.params;
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const data = await fetch(`${SERVER_URL}/products/${id}`)
-		.then(res => res.json())
-		.then(data => data as Product)
-		.catch(console.error);
+	const response = await product_operator.findUnique({
+		"where": { id }
+	}).then(
+		product => NextResponse.json(product)
+	).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	);
 
-	return NextResponse.json(data);
+	return response;
 }
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
