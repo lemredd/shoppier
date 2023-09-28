@@ -5,13 +5,13 @@ export const product_schema = object({
 	"title": string(),
 	"description": string(),
 	"price": number(),
-	"discountPercentage": number(),
-	"rating": number(),
 	"stock": number(),
 	"brand": string(),
-	"category": string(),
-	"thumbnail": string().url(),
-	"images": array(string().url())
+	"discountPercentage": number().nullable(),
+	"rating": number().nullable(),
+	"category": string().nullable(),// TODO: make required
+	"thumbnail": string().url().nullable(),// TODO: make required
+	"images": array(string().url()).nullable()// TODO: make required
 });
 
 const products_list_schema = object({
