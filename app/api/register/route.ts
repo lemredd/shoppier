@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { infer as extract, object, null as null_checker, string } from "zod";
+import { infer as extract, object, string } from "zod";
 
 import type { EndpointResponse } from "@api/lib/types";
 
@@ -17,8 +17,6 @@ const register_form_entries_schema = object({
 	"path": ["password", "confirm_password"]
 });
 
-const existing_user_checker = null_checker({ "invalid_type_error": "This user already exists." });
-
 type RegisterFormEntries = extract<typeof register_form_entries_schema>
 
 export async function POST(request: Request): Promise<EndpointResponse> {
@@ -31,27 +29,18 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	// TODO: validate with Zod
-	// TODO: maybe return `409`
-	const response = user_operator.findUnique({
-		"where": { "username": entries.username }
+	// TODO: Login after successful register
+	// TODO: Unify errors thrown by `Zod` and `Prisma`
+	const response = user_operator.create({
+		"data": {
+			"email": "email@email.com",
+			"username": entries.username,
+			"password": entries.password
+		}
 	}).then(
-		user => existing_user_checker.parse(user)
+		user => NextResponse.json(user)
 	).catch(
 		e => NextResponse.json(e, { "status": 409 })
 	);
-	
-	// TODO: Login after successful register
-	//const register_response = await fetch(`${SERVER_URL}/users/add`, {
-	//	"method": "POST",
-	//	"headers": { "Content-Type": "application/json" },
-	//	"body": JSON.stringify({
-	//		username,
-	//		password,
-	//		// expiresInMins: 60, // optional
-	//	})
-	//})
-	//	.then(res => res.json())
-	//	.then(data => data as Record<string, any>);
 	return response;
 }
