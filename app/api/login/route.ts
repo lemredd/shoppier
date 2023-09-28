@@ -7,7 +7,7 @@ import { user_operator } from "@api/lib/operator";
 
 const login_schema = object({
 	// TODO: accept email or username
-	"username": string(),
+	"username_or_email": string().or(string().email()),
 	"password": string()
 });
 
@@ -23,9 +23,10 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const response = user_operator.findUniqueOrThrow({
-		"where": { "username": entries.username }
-	})
+	const unique_finder = entries.username_or_email.includes("@")
+		? { "email": entries.username_or_email }
+		: { "username": entries.username_or_email };
+	const response = user_operator.findUniqueOrThrow({ "where": unique_finder })
 		.then(user => NextResponse.json(user)) // TODO: hide password
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
