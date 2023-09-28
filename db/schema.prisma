@@ -37,12 +37,20 @@ model Cart {
   id           Int            @id @default(autoincrement())
   user         User           @relation(fields: [user_id], references: [id])
   user_id      Int            @unique
+  products     CartProduct[]
 }
 
+model CartProduct {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    Int
 }
 
 model Product {
-  id                 Int    @id @default(autoincrement())
+  id                 Int            @id @default(autoincrement())
   title              String
   description        String
   brand              String
@@ -53,4 +61,5 @@ model Product {
   category           String? // TODO: make required
   thumbnail          String? // TODO: make required
   images             String? // TODO: make required
+  CartProduct        CartProduct[]
 }
