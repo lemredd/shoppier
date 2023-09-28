@@ -23,11 +23,10 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	// TODO: hide password
 	const response = user_operator.findUniqueOrThrow({
 		"where": { "username": entries.username }
 	})
-		.then(user => NextResponse.json(user))
+		.then(user => NextResponse.json(user)) // TODO: hide password
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
 	return response;

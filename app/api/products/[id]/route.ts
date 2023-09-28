@@ -21,13 +21,11 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const response = await product_operator.findUnique({
-		"where": { id }
-	}).then(
-		product => NextResponse.json(product)
-	).catch(
-		e => NextResponse.json(e, { "status": 422 }) // TODO: make error shape similar to `ZodError`
-	);
+	const response = await product_operator.findUniqueOrThrow({ "where": { id } })
+		.then(product => NextResponse.json(product))
+		// TODO: make error shape similar to `ZodError`
+		// TODO: make error status identifier
+		.catch(e => NextResponse.json(e, { "status": 422 }));
 
 	return response;
 }

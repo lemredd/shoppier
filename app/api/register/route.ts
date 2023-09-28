@@ -30,7 +30,6 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	// TODO: Login after successful register
-	// TODO: Unify errors thrown by `Zod` and `Prisma`
 	const response = user_operator.create({
 		"data": {
 			"email": "email@email.com",
@@ -38,9 +37,9 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 			"password": entries.password
 		}
 	}).then(
-		user => NextResponse.json(user)
+		user => NextResponse.json(user) // TODO: hide password
 	).catch(
-		e => NextResponse.json(e, { "status": 409 })
+		e => NextResponse.json(e, { "status": 409 }) // TODO: Unify errors thrown by `Zod` and `Prisma`
 	);
 	return response;
 }
