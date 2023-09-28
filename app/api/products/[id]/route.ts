@@ -27,7 +27,7 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 	}).then(
 		product => NextResponse.json(product)
 	).catch(
-		e => NextResponse.json(e, { "status": 422 })
+		e => NextResponse.json(e, { "status": 422 }) // TODO: make error shape similar to `ZodError`
 	);
 
 	return response;
@@ -46,22 +46,20 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const data = await fetch(`${SERVER_URL}/products/${id}`, {
-		"method": "PATCH",
-		"headers": { "content-type": "application/json" },
-		"body": JSON.stringify({
-			// TODO: allow inclusion of images. Before that, store these mock data in a real database
+	const response = product_operator.update({
+		"where": { id },
+		"data": {
 			...entries,
-			// Despite not being type restricted, the fake API has both properties below set as `number` initially.
-			"price": Number(entries.price),
-			"stock": Number(entries.stock)
-		})
-	})
-		.then(res => res.json())
-		.then(data => data as Product)
-		.catch(console.error);
+			"stock": Number(entries.stock),
+			"price": Number(entries.price)
+		}
+	}).then(
+		product => NextResponse.json(product)
+	).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	);
 	
-	return NextResponse.json(data);
+	return response;
 }
 
 export async function DELETE(_request: Request, context: Context): Promise<EndpointResponse> {
