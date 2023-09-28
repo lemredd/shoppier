@@ -10,7 +10,7 @@ import {
 import { product_operator } from "@api/lib/operator";
 
 interface Context {
-	params: { id: number }
+	params: { id: string }
 }
 
 const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
@@ -19,7 +19,7 @@ const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
 );
 
 export async function GET(_request: Request, context: Context): Promise<EndpointResponse> {
-	const { id } = context.params;
+	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const response = await product_operator.findUnique({
@@ -34,7 +34,7 @@ export async function GET(_request: Request, context: Context): Promise<Endpoint
 }
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
-	const { id } = context.params;
+	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const form_data = await request.formData();
@@ -65,7 +65,7 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 }
 
 export async function DELETE(_request: Request, context: Context): Promise<EndpointResponse> {
-	const { id } = context.params;
+	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const data = await fetch(`${SERVER_URL}/products/${id}`, { "method": "DELETE" })
