@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { ProductsList } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { SERVER_URL } from "@api/lib/constants";
 
 export async function GET(request: Request): Promise<EndpointResponse> {
 	const url = new URL(request.url);
@@ -11,7 +11,7 @@ export async function GET(request: Request): Promise<EndpointResponse> {
 
 	if (!keyword) return NextResponse.json({ "products": [] });
 
-	const response = await fetch(`${FAKE_API_URL}/products/search?q=${keyword}`)
+	const response = await fetch(`${SERVER_URL}/products/search?q=${keyword}`)
 		.then(res => res.json())
 		.then(data => data as ProductsList);
 	return NextResponse.json(response);

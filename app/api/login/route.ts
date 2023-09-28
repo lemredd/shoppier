@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { user_operator } from "@api/lib/operator";
 
 const login_schema = object({
-	// TODO: accept email or username, though this feature is not implemented by the fake API used in this project.
-	"username": string(),
+	// TODO: accept email or username
+	"username_or_email": string().or(string().email()),
 	"password": string()
 });
 
@@ -23,18 +23,12 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const login_response = await fetch(`${FAKE_API_URL}/auth/login`, {
-		"method": "POST",
-		"headers": { "Content-Type": "application/json" },
-		"body": JSON.stringify({
-			...entries
-			// expiresInMins: 60, // optional
-		})
-	})
-		.then(res => res.json())
-		.then(data => data as Record<string, any>);
-	const is_valid_credential = Boolean(login_response.id);
+	const unique_finder = entries.username_or_email.includes("@")
+		? { "email": entries.username_or_email }
+		: { "username": entries.username_or_email };
+	const response = user_operator.findUniqueOrThrow({ "where": unique_finder })
+		.then(user => NextResponse.json(user)) // TODO: hide password
+		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
-	if (!is_valid_credential) return NextResponse.json(String(login_response.message), { "status": 422 });
-	return NextResponse.json(login_response);
+	return response;
 }

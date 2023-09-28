@@ -29,7 +29,10 @@ export default function ProductForm({ product, method }: Props): React.ReactElem
 	// TODO: suspense form!
 	return (
 		<form onSubmit={submit} method={method} style={{ "display": "flex", "flexDirection": "column", "gap": "1em" }}>
-			{/* TODO: use atomic CSS Library */}
+			{/*
+				TODO: use atomic CSS Library
+				TODO: Add `images` and `thumbnail` fields
+			*/}
 			<label htmlFor="title">
 				title
 				<input type="text" id="title" name="title" defaultValue={product?.title} />

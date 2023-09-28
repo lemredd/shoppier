@@ -1,34 +1,37 @@
 import { NextResponse } from "next/server";
 
-import type { Product } from "@/app/lib/types";
 import type { EndpointResponse } from "@api/lib/types";
 import {
 	product_creation_schema as product_modification_schema,
 	type ProductCreationFormEntries as ProductModificationFormEntries
 } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { product_operator } from "@api/lib/operator";
 
 interface Context {
-	params: { id: number }
+	params: { id: string }
 }
 
-const respond_if_invalid_id = (): EndpointResponse => NextResponse.json("Please provide a valid id.", { "status": 422 });
+const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
+	"Please provide a valid id.",
+	{ "status": 422 }
+);
 
 export async function GET(_request: Request, context: Context): Promise<EndpointResponse> {
-	const { id } = context.params;
+	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const data = await fetch(`${FAKE_API_URL}/products/${id}`)
-		.then(res => res.json())
-		.then(data => data as Product)
-		.catch(console.error);
+	const response = await product_operator.findUniqueOrThrow({ "where": { id } })
+		.then(product => NextResponse.json(product))
+		// TODO: make error shape similar to `ZodError`
+		// TODO: make error status identifier
+		.catch(e => NextResponse.json(e, { "status": 422 }));
 
-	return NextResponse.json(data);
+	return response;
 }
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
-	const { id } = context.params;
+	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const form_data = await request.formData();
@@ -40,32 +43,33 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const data = await fetch(`${FAKE_API_URL}/products/${id}`, {
-		"method": "PATCH",
-		"headers": { "content-type": "application/json" },
-		"body": JSON.stringify({
-			// TODO: allow inclusion of images. Before that, store these mock data in a real database
+	const response = product_operator.update({
+		"where": { id },
+		"data": {
 			...entries,
-			// Despite not being type restricted, the fake API has both properties below set as `number` initially.
-			"price": Number(entries.price),
-			"stock": Number(entries.stock)
-		})
-	})
-		.then(res => res.json())
-		.then(data => data as Product)
-		.catch(console.error);
+			"stock": Number(entries.stock),
+			"price": Number(entries.price)
+		}
+	}).then(
+		product => NextResponse.json(product)
+	).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	);
 	
-	return NextResponse.json(data);
+	return response;
 }
 
 export async function DELETE(_request: Request, context: Context): Promise<EndpointResponse> {
-	const { id } = context.params;
+	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const data = await fetch(`${FAKE_API_URL}/products/${id}`, { "method": "DELETE" })
-		.then(res => res.json())
-		.then(data => data as Product)
-		.catch(console.error);
+	const response = await product_operator.delete({
+		"where": { id }
+	}).then(
+		product => NextResponse.json(product)
+	).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	);
 	
-	return NextResponse.json(data);
+	return response;
 }

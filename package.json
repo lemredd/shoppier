@@ -6,7 +6,6 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-
 		"template:remote:add": "git remote add template git@github.com:lemredd/web-template.git",
 		"template:remote:rm": "git remote remove template",
 		"template:checkout": "git checkout -b updated_template",
@@ -15,6 +14,9 @@
 		"template:merge": "git checkout main && git merge updated_template",
 		"template:recall": "npm run template:remote:add && npm run template:checkout:detach && git branch -D main && git switch -c main && npm run template:remote:rm",
 		"template:update": "npm run template:remote:add && npm run template:checkout && npm run template:pull && git merge main && npm run template:remote:rm"
+	},
+	"dependencies": {
+		"@prisma/client": "5.3.1"
 	},
 	"devDependencies": {
 		"@types/node": "^20.1.1",

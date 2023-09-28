@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 
-const { FAKE_USERS_API_URL } = process.env;
+const FAKE_API_URL = "https://jsonplaceholder.typicode.com";
 
 interface FakeUser {
 	// Keys to delete:
@@ -24,7 +24,7 @@ interface FakeUser {
 }
 
 export default async function seed_users(prisma: PrismaClient): Promise<void> {
-	const fake_users = await fetch(`${FAKE_USERS_API_URL}/users`)
+	const fake_users = await fetch(`${FAKE_API_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as FakeUser[]);
 		
@@ -42,7 +42,7 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			username,
 			name,
 			phone,
-			"password": "password"
+			"password": "password" // TODO: encrypt
 		};
 		const address_creation = {
 			"create": { ...address_to_use as typeof address, "country": "PH" }

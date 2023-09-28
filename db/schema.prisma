@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = "native"
 }
 
 datasource db {
@@ -25,9 +26,9 @@ model User {
   id       Int      @id @default(autoincrement())
   name     String?
   email    String   @unique
-  username String   @unique
+  username String?   @unique
   password String
-  phone    String
+  phone    String?
   address  Address?
 }
 
@@ -38,9 +39,9 @@ model Product {
   brand              String
   stock              Int
   price              Int
-  discountPercentage Int
-  rating             Int
-  category           String
-  thumbnail          String
-  images             String
+  discountPercentage Int?
+  rating             Int?
+  category           String? // TODO: make required
+  thumbnail          String? // TODO: make required
+  images             String? // TODO: make required
 }

@@ -26,12 +26,13 @@ export default function Page({ params }: PageProps): React.ReactNode {
 	const [is_deleting, set_is_deleting] = useState<boolean>(false);
 	function delete_product(): void {
 		fetch(`/api/products/${id}`, { "method": "DELETE" })
-			.then(() => set_is_deleting(false))
+			.then(() => set_is_deleting(false)) // TODO: redirect to another page
 			.catch(console.error);
 	}
 
 	return (
 		<>
+			{/* TODO: make error page if id is not found */}
 			<ProductForm method="PATCH" product={product} />
 			<button type="button" onClick={(): void => set_is_deleting(true)}>
 				Delete

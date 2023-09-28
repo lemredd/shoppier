@@ -1,13 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
-import { FAKE_API_URL } from "@api/lib/constants";
+import { user_operator } from "@api/lib/operator";
 
-export async function GET(): Promise<EndpointResponse> {
-	const data = await fetch(`${FAKE_API_URL}/users`)
-		.then(res => res.json())
-		.then(data => data as Record<string, any>)
-		.catch(console.error);
+export async function GET(request: NextRequest): Promise<EndpointResponse> {
+	const { skip, limit } = Object.fromEntries(request.nextUrl.searchParams);
+	// TODO: hide password
+	const data = await user_operator.findMany({
+		"skip": !isNaN(Number(skip)) ? Number(skip) : 0,
+		"take": !isNaN(Number(limit)) ? Number(limit) : 10
+	});
+	
 	return NextResponse.json(data);
 }
