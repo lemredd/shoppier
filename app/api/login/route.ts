@@ -1,5 +1,7 @@
-import { object, output, string } from "zod";
 import { NextResponse } from "next/server";
+import { object, output, string } from "zod";
+
+import type { User } from "@prisma/client";
 
 import type { EndpointResponse } from "@api/lib/types";
 
@@ -23,13 +25,26 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
+	let found_user: User;
 	const unique_finder = entries.username_or_email.includes("@")
 		? { "email": entries.username_or_email }
 		: { "username": entries.username_or_email };
-	const response = user_operator.findUniqueOrThrow({ "where": unique_finder })
+	const response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
 		// TODO: use `NextResponse.next` to set cookie
-		.then(user => NextResponse.json(user, { "headers": { "Set-Cookie": `user=${user.id}` } })) // TODO: hide password
+		.then(user => {
+			found_user = user;
+			return NextResponse.json(user);
+		}) // TODO: hide password
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
+	if (response.ok) {
+		response.cookies.set({
+			"name": "auth",
+			"value": String(found_user!.id), // TODO: make and use `auth_token` field from user model
+			"httpOnly": true,
+			"sameSite": "strict",
+			"maxAge": 60 * 60 * 24 * 30 // TODO: change duration (currently 1 month)
+		});
+	}
 	return response;
 }
