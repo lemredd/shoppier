@@ -27,7 +27,8 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		? { "email": entries.username_or_email }
 		: { "username": entries.username_or_email };
 	const response = user_operator.findUniqueOrThrow({ "where": unique_finder })
-		.then(user => NextResponse.json(user)) // TODO: hide password
+		// TODO: use `NextResponse.next` to set cookie
+		.then(user => NextResponse.json(user, { "headers": { "Set-Cookie": `user=${user.id}` } })) // TODO: hide password
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
 	return response;
