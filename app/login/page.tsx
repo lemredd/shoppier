@@ -1,23 +1,26 @@
 "use client";
 
-import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
+import type { FormEvent } from "react";
+
+// TODO: redirect to homepage if `auth` cookie is set
 export default function Page(): React.ReactNode {
+	const router = useRouter();
 	function submit(event: FormEvent): void {
 		event.preventDefault();
 
-		function handle_data(data: Record<string, any>): void {
-			localStorage.setItem("user", JSON.stringify(data)); // TODO: `router.push` to home
+		function handle_response(response: Response): void {
+			if (response.ok) return router.push("/");
+			console.error(response.body); // TODO: show error on UI
 		}
-
 		const form_data = new FormData(event.target as HTMLFormElement);
 		fetch("/api/login", {
 			"method": "POST",
 			"body": form_data
 		})
-			.then(response => response.json())
-			.then(handle_data)
-			.catch(console.error); // TODO: show error on UI
+			.then(handle_response)
+			.catch(console.error);
 	}
 
 	return (

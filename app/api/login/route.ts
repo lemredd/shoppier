@@ -30,7 +30,6 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		? { "email": entries.username_or_email }
 		: { "username": entries.username_or_email };
 	const response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
-		// TODO: use `NextResponse.next` to set cookie
 		.then(user => {
 			found_user = user;
 			return NextResponse.json(user);
