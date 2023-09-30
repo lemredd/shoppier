@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from "react";
 
+import { Cart } from "@prisma/client";
+
 import type { Product } from "@/app/lib/types";
 
 import get_product from "@app/products/lib/get_product";
 
 interface Props {
 	id: number
+	cart: Cart
 }
 
-export default function Product({ id }: Props): React.ReactNode {
+export default function Product({ id, cart }: Props): React.ReactNode {
 	const [product, set_product] = useState<Product>();
 
 	useEffect(() => {
