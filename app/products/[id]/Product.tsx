@@ -15,6 +15,7 @@ export const preload = (id: number): void => {
 };
 
 export default async function ProductDetails({ id, cart }: Props): Promise<React.ReactElement> {
+	const data = await get_product(id);
 	return (
 		<>
 			{/*
