@@ -12,7 +12,7 @@ export default async function Page({ params }: PageProps): Promise<React.ReactEl
 	
 	return (
 		<>
-			<Product id={id} />
+			<Product id={id} cart={cart} />
 		</>
 	);
 }
