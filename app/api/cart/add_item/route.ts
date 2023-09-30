@@ -1,24 +1,24 @@
-import { infer as extract, number, object } from "zod";
+import { infer as extract, object, string } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_operator } from "@api/lib/operator";
 
-const body_schema = object({ "user_id": number() });
+const form_data_schema = object({
+	"id": string().refine(value => !isNaN(Number(value))),
+	"product_id": string().refine(value => !isNaN(Number(value))),
+	"quantity": string().refine(value => !isNaN(Number(value)))
+});
 
-type Body = extract<typeof body_schema>;
+type FormDataEntries = extract<typeof form_data_schema>;
 
 export async function POST(request: NextRequest): Promise<EndpointResponse> {
-	const body = request.body;
-	if (!body) return NextResponse.json("Not enough data.", { "status": 422 });
-
-	const reader = body.getReader();
-	const { value } = await reader.read();
-	const decoded_body = JSON.parse(new TextDecoder().decode(value)) as Body;
+	const form_data = await request.formData();
+	const entries = Object.fromEntries(form_data) as FormDataEntries;
 
 	try {
-		body_schema.parse(decoded_body);
+		form_data_schema.parse(entries);
 	} catch (e) {
 		return NextResponse.json(e, { "status": 422 });
 	}
