@@ -13,7 +13,7 @@ interface Props {
 	cart: Cart
 }
 
-export default function Product({ id, cart }: Props): React.ReactNode {
+export default function ProductDetails({ id, cart }: Props): React.ReactNode {
 	const [product, set_product] = useState<Product>();
 	const [is_adding_item, set_is_adding_item] = useState<boolean>();
 
