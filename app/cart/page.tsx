@@ -4,8 +4,9 @@ import type { Cart } from "@prisma/client";
 
 import { SERVER_URL } from "@app/lib/constants";
 
-async function get_user_cart(user_id: number): Promise<Cart> {
+async function get_user_cart(): Promise<Cart> {
 	// TODO: consider anonymous cart
+	const user_id = Number(cookies().get("auth")?.value);
 	return await fetch(`${SERVER_URL}/api/cart`, {
 		"method": "POST",
 		"headers": { "content-type": "application/json" },
@@ -17,8 +18,7 @@ async function get_user_cart(user_id: number): Promise<Cart> {
 	);
 }
 export default async function Page(): Promise<React.ReactElement> {
-	const auth = cookies().get("auth");
-	const cart = auth?.value ? await get_user_cart(Number(auth.value)) : undefined;
+	const cart = await get_user_cart();
 	console.log(cart);
 	return (
 		<main>
