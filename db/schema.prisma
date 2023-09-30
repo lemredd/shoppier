@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = "native"
 }
 
@@ -22,18 +22,37 @@ model Address {
   user_id Int    @unique
 }
 
+// make auth_token attribute
 model User {
   id       Int      @id @default(autoincrement())
   name     String?
   email    String   @unique
-  username String?   @unique
+  username String?  @unique
   password String
   phone    String?
   address  Address?
+  cart     Cart?
+}
+
+model Cart {
+  id           Int            @id @default(autoincrement())
+  user         User           @relation(fields: [user_id], references: [id])
+  user_id      Int            @unique
+  products     CartProduct[]
+}
+
+// TODO: consider anonymous carts
+model CartProduct {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    Int
 }
 
 model Product {
-  id                 Int    @id @default(autoincrement())
+  id                 Int            @id @default(autoincrement())
   title              String
   description        String
   brand              String
@@ -44,4 +63,5 @@ model Product {
   category           String? // TODO: make required
   thumbnail          String? // TODO: make required
   images             String? // TODO: make required
+  CartProduct        CartProduct[]
 }
