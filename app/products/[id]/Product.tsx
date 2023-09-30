@@ -22,6 +22,10 @@ export default function Product({ id, cart }: Props): React.ReactNode {
 			.catch(console.error);
 	}, [id]);
 
+	function add_to_cart(): void {
+		
+	}
+
 	return (
 		<>
 			{/*
@@ -29,6 +33,7 @@ export default function Product({ id, cart }: Props): React.ReactNode {
 			* TODO: Display the rest of product details
 			*/}
 			{product?.title}
+			<button onClick={add_to_cart}>Add to cart</button>
 		</>
 	);
 }
