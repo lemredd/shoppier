@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { Cart } from "@prisma/client";
 
@@ -23,8 +23,14 @@ export default function Product({ id, cart }: Props): React.ReactNode {
 			.catch(console.error);
 	}, [id]);
 
-	function add_to_cart(): void {
-		
+	function add_to_cart(event: FormEvent): void {
+		event.preventDefault();
+		const form_data = new FormData(event.target as HTMLFormElement);
+
+		fetch("/api/cart/add_item", {
+			"method": "POST",
+			"body": form_data
+		}).then(console.log).catch(console.error);
 	}
 
 	return (
