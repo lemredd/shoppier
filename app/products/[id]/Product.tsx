@@ -13,6 +13,11 @@ interface Props {
 	cart: Cart
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const preload = (id: number): void => {
+	void get_product(id);
+};
+
 export default function ProductDetails({ id, cart }: Props): React.ReactNode {
 	const [product, set_product] = useState<Product>();
 	const [is_adding_item, set_is_adding_item] = useState<boolean>();
