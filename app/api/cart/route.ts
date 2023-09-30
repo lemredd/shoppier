@@ -10,7 +10,7 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 
 	const reader = body.getReader();
 	const { value } = await reader.read();
-	const decoded_body = JSON.parse(new TextDecoder().decode(value)) as Record<string, any>;
+	const decoded_body = JSON.parse(new TextDecoder().decode(value)) as Record<string, any>; // TODO: validate with schema
 
 	// TODO: handle error if `create` fails
 	// TODO: consider anonymous carts
