@@ -34,7 +34,22 @@ export default function Product({ id, cart }: Props): React.ReactNode {
 			* TODO: Display the rest of product details
 			*/}
 			{product?.title}
-			<button onClick={add_to_cart}>Add to cart</button>
+			<button type="button" onClick={(): void => set_is_adding_item(true)}>Add to cart</button>
+			<dialog open={is_adding_item}>
+				<form onSubmit={add_to_cart} method="POST">
+					<input type="hidden" name="id" defaultValue={cart.id} />
+					<input type="hidden" name="product_id" defaultValue={id} />
+					<input type="number" name="quantity" defaultValue={1} />
+					<input type="submit" value="Add to Cart" />
+				</form>
+				
+				<button
+					type="button"
+					onClick={(): void => set_is_adding_item(false)}
+				>
+					cancel
+				</button>
+			</dialog>
 		</>
 	);
 }
