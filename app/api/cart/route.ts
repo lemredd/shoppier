@@ -1,8 +1,13 @@
+import { infer as extract, number, object } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_operator } from "@api/lib/operator";
+
+const body_schema = object({ "user_id": number() });
+
+type Body = extract<typeof body_schema>;
 
 export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	const body = request.body;
@@ -10,7 +15,13 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 
 	const reader = body.getReader();
 	const { value } = await reader.read();
-	const decoded_body = JSON.parse(new TextDecoder().decode(value)) as Record<string, any>; // TODO: validate with schema
+	const decoded_body = JSON.parse(new TextDecoder().decode(value)) as Body;
+
+	try {
+		body_schema.parse(decoded_body);
+	} catch (e) {
+		return NextResponse.json(e, { "status": 422 });
+	}
 
 	// TODO: handle error if `create` fails
 	// TODO: consider anonymous carts
