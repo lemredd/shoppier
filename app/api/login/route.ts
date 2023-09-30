@@ -39,7 +39,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	if (response.ok) {
 		response.cookies.set({
 			"name": "auth",
-			"value": String(found_user!.id), // TODO: make and use `auth_token` field from user model
+			"value": String(found_user!.id), // TODO: make and use `auth_token` field from user model, which is regenerated for every login
 			"httpOnly": true,
 			"sameSite": "strict",
 			"maxAge": 60 * 60 * 24 * 30 // TODO: change duration (currently 1 month)
