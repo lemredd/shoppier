@@ -1,6 +1,6 @@
 import get_user_cart from "@/app/lib/get_user_cart";
 
-import Product, { preload } from "./Product";
+import Product, { preload } from "@app/products/[id]/components/Product";
 
 interface PageProps {
 	params: Record<"id", number>
