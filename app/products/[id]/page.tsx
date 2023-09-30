@@ -1,6 +1,6 @@
 import get_user_cart from "@/app/lib/get_user_cart";
 
-import Product from "./Product";
+import Product, { preload } from "./Product";
 
 interface PageProps {
 	params: Record<"id", number>
@@ -8,6 +8,7 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps): Promise<React.ReactElement> {
 	const { id } = params;
+	preload(id);
 	const cart = await get_user_cart();
 	
 	return (
