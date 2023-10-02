@@ -1,9 +1,10 @@
 import { infer as extract, string, object } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
+import type { User } from "@prisma/client";
 import type { EndpointResponse } from "@api/lib/types";
 
-import { cart_operator } from "@api/lib/operator";
+import { cart_operator, user_operator } from "@api/lib/operator";
 
 const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
 const body_schema = object({
@@ -22,6 +23,15 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	try {
 		body_schema.parse(decoded_body);
 	} catch (e) {
+		return NextResponse.json(e, { "status": 422 });
+	}
+
+	let user: User;
+	try {
+		user = await user_operator.findFirstOrThrow({
+			"where": { "auth_token": decoded_body.auth_token }
+		});
+	} catch(e) {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
