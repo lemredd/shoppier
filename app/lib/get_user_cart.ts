@@ -1,12 +1,14 @@
 import { cookies } from "next/headers";
 
-import type { Cart } from "@prisma/client";
+import type { Cart, CartProduct } from "@prisma/client";
 
 import { SERVER_URL } from "@app/lib/constants";
 
-interface UserCart extends Cart {
-	anonymous: boolean
+interface AnonymousCart {
+	products: Omit<CartProduct, "id">[]
 }
+
+type UserCart = Cart | AnonymousCart
 
 export default async function get_user_cart(): Promise<UserCart> {
 	const auth_token = cookies().get("auth")?.value;
