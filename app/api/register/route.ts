@@ -35,7 +35,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 
 	// TODO: Login after successful register
 	let new_user: Omit<User, "password"> & Partial<{ password: string }>;
-	let response = await user_operator.create({
+	const response = await user_operator.create({
 		"data": {
 			"email": entries.email,
 			"password": await encryptor.hash(entries.password, Number(PASSWORD_SALT_ROUNDS)),
@@ -48,5 +48,15 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}).catch(
 		e => NextResponse.json(e, { "status": 409 }) // TODO: Unify errors thrown by `Zod` and `Prisma`
 	);
+
+	if (response.ok) {
+		response.cookies.set({
+			"name": "auth",
+			"value": new_user!.auth_token,
+			"httpOnly": true,
+			"sameSite": "strict",
+			"maxAge": 60 * 60 * 24 * 30 // TODO: change duration (currently 1 month)
+		});
+	}
 	return response;
 }
