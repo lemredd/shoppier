@@ -8,10 +8,9 @@ import type { EndpointResponse } from "@api/lib/types";
 
 import { user_operator } from "@api/lib/operator";
 
-const { PASSWORD_SALT_ROUNDS } = process.env;
+const { AUTH_TOKEN_SALT_ROUNDS } = process.env;
 
 const login_schema = object({
-	// TODO: accept email or username
 	"username_or_email": string().or(string().email()),
 	"password": string()
 });
@@ -48,7 +47,11 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
 	if (response.ok) {
-		const auth_token = `${found_user!.email}_${Date.now()}`;
+		const auth_token = await encryptor.hash(
+			`${found_user!.email}_${Date.now()}`,
+			Number(AUTH_TOKEN_SALT_ROUNDS)
+		);
+
 		await user_operator.update({
 			"where": unique_finder,
 			"data": { auth_token }
