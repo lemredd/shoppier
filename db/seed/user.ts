@@ -46,6 +46,7 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			name,
 			phone,
 			password,
+			"auth_token": `${email}_${Date.now()}`
 		};
 		const address_creation = {
 			"create": { ...address_to_use as typeof address, "country": "PH" }
