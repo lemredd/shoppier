@@ -4,7 +4,11 @@ import type { Cart } from "@prisma/client";
 
 import { SERVER_URL } from "@app/lib/constants";
 
-export default async function get_user_cart(): Promise<Cart> {
+interface UserCart extends Cart {
+	anonymous: boolean
+}
+
+export default async function get_user_cart(): Promise<UserCart> {
 	// TODO: consider anonymous cart
 	const user_id = Number(cookies().get("auth")?.value);
 	return await fetch(`${SERVER_URL}/api/cart`, {
