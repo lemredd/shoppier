@@ -22,13 +22,13 @@ model Address {
   user_id Int    @unique
 }
 
-// make auth_token attribute
 model User {
   id       Int      @id @default(autoincrement())
   name     String?
   email    String   @unique
   username String?  @unique
   password String
+  auth_token String @unique
   phone    String?
   address  Address?
   cart     Cart?
