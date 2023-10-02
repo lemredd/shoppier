@@ -1,9 +1,13 @@
+import encryptor from "bcrypt";
 import { NextResponse } from "next/server";
 import { infer as extract, object, string } from "zod";
 
 import type { EndpointResponse } from "@api/lib/types";
 
 import { user_operator } from "@api/lib/operator";
+import { User } from "@prisma/client";
+
+const { PASSWORD_SALT_ROUNDS, AUTH_TOKEN_SALT_ROUNDS } = process.env;
 
 // Before you ask why, this is because exported types from the generated `Prisma` namespace aren't recognized.
 // Tested in both Neovim and VSCode/ium. Can't figure out why it just won't recognize them.
@@ -33,11 +37,14 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	const response = user_operator.create({
 		"data": {
 			"email": entries.email,
-			"password": entries.password
+			"password": await encryptor.hash(entries.password, Number(PASSWORD_SALT_ROUNDS)),
+			"auth_token": await encryptor.hash(`${entries.email}_${Date.now()}`, Number(AUTH_TOKEN_SALT_ROUNDS))
 		}
-	}).then(
-		user => NextResponse.json(user) // TODO: hide password
-	).catch(
+	}).then(user => {
+		const new_user = user as Omit<User, "password"> & Partial<{ password: string }>;
+		delete new_user.password;
+		return NextResponse.json(new_user);
+	}).catch(
 		e => NextResponse.json(e, { "status": 409 }) // TODO: Unify errors thrown by `Zod` and `Prisma`
 	);
 	return response;
