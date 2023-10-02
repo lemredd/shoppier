@@ -1,3 +1,4 @@
+import encryptor from "bcrypt";
 import { NextResponse } from "next/server";
 import { object, output, string } from "zod";
 
@@ -7,13 +8,15 @@ import type { EndpointResponse } from "@api/lib/types";
 
 import { user_operator } from "@api/lib/operator";
 
+const { PASSWORD_SALT_ROUNDS } = process.env;
+
 const login_schema = object({
 	// TODO: accept email or username
 	"username_or_email": string().or(string().email()),
 	"password": string()
 });
-
 type LoginFormEntries = output<typeof login_schema>;
+
 
 export async function POST(request: Request): Promise<EndpointResponse> {
 	const form_data = await request.formData();
@@ -26,11 +29,16 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	let found_user: User;
+	async function validate_password(found: string): Promise<boolean> {
+		return await encryptor.compare(entries.password, found);
+	}
 	let unique_finder = entries.username_or_email.includes("@")
 		? { "email": entries.username_or_email }
 		: { "username": entries.username_or_email };
 	let response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
-		.then(user => {
+		.then(async user => {
+			if (!await validate_password(user.password)) return NextResponse.json("Invalid Credentials", { "status": 422 });
+
 			found_user = user;
 			unique_finder = { "email": user.email };
 			return NextResponse.json(user);
