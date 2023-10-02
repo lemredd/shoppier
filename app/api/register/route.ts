@@ -1,13 +1,15 @@
+import encryptor from "bcrypt";
 import { NextResponse } from "next/server";
 import { infer as extract, object, string } from "zod";
+
+import { User } from "@prisma/client";
 
 import type { EndpointResponse } from "@api/lib/types";
 
 import { user_operator } from "@api/lib/operator";
 
-// Before you ask why, this is because exported types from the generated `Prisma` namespace aren't recognized.
-// Tested in both Neovim and VSCode/ium. Can't figure out why it just won't recognize them.
-// TODO: find a fix for this. Should just `Pick` `email, password` from `Prisma.UserCreateInput`
+const { PASSWORD_SALT_ROUNDS, AUTH_TOKEN_SALT_ROUNDS } = process.env;
+
 const register_form_entries_schema = object({
 	"email": string().email(),
 	"password": string().min(8, "Password should be at least 8 characters long."),
@@ -16,7 +18,6 @@ const register_form_entries_schema = object({
 	"message": "Passwords don't match.",
 	"path": ["password", "confirm_password"]
 });
-
 type RegisterFormEntries = extract<typeof register_form_entries_schema>
 
 export async function POST(request: Request): Promise<EndpointResponse> {
@@ -30,15 +31,29 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	// TODO: Login after successful register
-	const response = user_operator.create({
+	let new_user: Omit<User, "password"> & Partial<{ password: string }>;
+	const response = await user_operator.create({
 		"data": {
 			"email": entries.email,
-			"password": entries.password
+			"password": await encryptor.hash(entries.password, Number(PASSWORD_SALT_ROUNDS)),
+			"auth_token": await encryptor.hash(`${entries.email}_${Date.now()}`, Number(AUTH_TOKEN_SALT_ROUNDS))
 		}
-	}).then(
-		user => NextResponse.json(user) // TODO: hide password
-	).catch(
+	}).then(user => {
+		new_user = user;
+		delete new_user.password;
+		return NextResponse.json(new_user);
+	}).catch(
 		e => NextResponse.json(e, { "status": 409 }) // TODO: Unify errors thrown by `Zod` and `Prisma`
 	);
+
+	if (response.ok) {
+		response.cookies.set({
+			"name": "auth",
+			"value": new_user!.auth_token,
+			"httpOnly": true,
+			"sameSite": "strict",
+			"maxAge": 60 * 60 * 24 * 30 // TODO: change duration (currently 1 month)
+		});
+	}
 	return response;
 }
