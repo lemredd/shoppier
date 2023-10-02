@@ -16,7 +16,6 @@ const login_schema = object({
 });
 type LoginFormEntries = output<typeof login_schema>;
 
-
 export async function POST(request: Request): Promise<EndpointResponse> {
 	const form_data = await request.formData();
 	const entries = Object.fromEntries(form_data) as LoginFormEntries;
@@ -51,7 +50,6 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 			`${found_user!.email}_${Date.now()}`,
 			Number(AUTH_TOKEN_SALT_ROUNDS)
 		);
-
 		await user_operator.update({
 			"where": unique_finder,
 			"data": { auth_token }

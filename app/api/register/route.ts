@@ -34,14 +34,15 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	// TODO: Login after successful register
-	const response = user_operator.create({
+	let new_user: Omit<User, "password"> & Partial<{ password: string }>;
+	let response = await user_operator.create({
 		"data": {
 			"email": entries.email,
 			"password": await encryptor.hash(entries.password, Number(PASSWORD_SALT_ROUNDS)),
 			"auth_token": await encryptor.hash(`${entries.email}_${Date.now()}`, Number(AUTH_TOKEN_SALT_ROUNDS))
 		}
 	}).then(user => {
-		const new_user = user as Omit<User, "password"> & Partial<{ password: string }>;
+		new_user = user;
 		delete new_user.password;
 		return NextResponse.json(new_user);
 	}).catch(
