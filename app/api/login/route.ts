@@ -38,6 +38,11 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
 	if (response.ok) {
+		const auth_token = `${found_user!.email}_${Date.now()}`;
+		await user_operator.update({
+			"where": unique_finder,
+			"data": { auth_token }
+		}).catch(e => response = NextResponse.json(e, { "status": 500 }));
 		response.cookies.set({
 			"name": "auth",
 			"value": String(found_user!.id), // TODO: make and use `auth_token` field from user model, which is regenerated for every login
