@@ -32,6 +32,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	let response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
 		.then(user => {
 			found_user = user;
+			unique_finder = { "email": user.email };
 			return NextResponse.json(user);
 		}) // TODO: hide password
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
