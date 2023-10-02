@@ -1,6 +1,8 @@
+import encryptor from "bcrypt";
 import type { PrismaClient } from "@prisma/client";
 
 const FAKE_API_URL = "https://jsonplaceholder.typicode.com";
+const { PASSWORD_SALT_ROUNDS } = process.env;
 
 interface FakeUser {
 	// Keys to delete:
@@ -27,7 +29,8 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 	const fake_users = await fetch(`${FAKE_API_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as FakeUser[]);
-		
+
+	const password = await encryptor.hash("password", Number(PASSWORD_SALT_ROUNDS));
 	fake_users.forEach(({
 		username,
 		name,
@@ -42,8 +45,7 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			username,
 			name,
 			phone,
-			"password": "password", // TODO: encrypt
-			"auth_token": `${email}_${Date.now()}`
+			password,
 		};
 		const address_creation = {
 			"create": { ...address_to_use as typeof address, "country": "PH" }
