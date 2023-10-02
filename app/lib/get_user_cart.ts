@@ -8,7 +8,7 @@ interface AnonymousCart {
 	products: Omit<CartProduct, "id">[]
 }
 
-type UserCart = Cart | AnonymousCart
+type UserCart = Cart | AnonymousCart;
 
 export default async function get_user_cart(): Promise<UserCart> {
 	const auth_token = cookies().get("auth")?.value;
