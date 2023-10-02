@@ -28,7 +28,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	let found_user: User;
+	let found_user: Omit<User, "password"> & Partial<{ password: string }>;
 	async function validate_password(found: string): Promise<boolean> {
 		return await encryptor.compare(entries.password, found);
 	}
@@ -40,9 +40,11 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 			if (!await validate_password(user.password)) return NextResponse.json("Invalid Credentials", { "status": 422 });
 
 			found_user = user;
+			delete found_user.password;
 			unique_finder = { "email": user.email };
-			return NextResponse.json(user);
-		}) // TODO: hide password
+
+			return NextResponse.json(found_user);
+		})
 		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
 
 	if (response.ok) {
