@@ -2,16 +2,14 @@ import encryptor from "bcrypt";
 import { NextResponse } from "next/server";
 import { infer as extract, object, string } from "zod";
 
+import { User } from "@prisma/client";
+
 import type { EndpointResponse } from "@api/lib/types";
 
 import { user_operator } from "@api/lib/operator";
-import { User } from "@prisma/client";
 
 const { PASSWORD_SALT_ROUNDS, AUTH_TOKEN_SALT_ROUNDS } = process.env;
 
-// Before you ask why, this is because exported types from the generated `Prisma` namespace aren't recognized.
-// Tested in both Neovim and VSCode/ium. Can't figure out why it just won't recognize them.
-// TODO: find a fix for this. Should just `Pick` `email, password` from `Prisma.UserCreateInput`
 const register_form_entries_schema = object({
 	"email": string().email(),
 	"password": string().min(8, "Password should be at least 8 characters long."),
@@ -20,7 +18,6 @@ const register_form_entries_schema = object({
 	"message": "Passwords don't match.",
 	"path": ["password", "confirm_password"]
 });
-
 type RegisterFormEntries = extract<typeof register_form_entries_schema>
 
 export async function POST(request: Request): Promise<EndpointResponse> {

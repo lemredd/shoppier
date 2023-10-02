@@ -7,7 +7,7 @@ export default function Page(): React.ReactNode {
 		event.preventDefault();
 
 		function handle_data(data: Record<string, any>): void {
-			localStorage.setItem("user", JSON.stringify(data)); // TODO: `router.push` to home
+			console.log(data); // TODO: `router.push` to home
 		}
 
 		const form_data = new FormData(event.target as HTMLFormElement);
