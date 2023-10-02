@@ -18,7 +18,8 @@ export default async function get_user_cart(): Promise<UserCart> {
 		"body": JSON.stringify({ auth_token })
 	}).then(
 		res => res.json()
-	).then(
-		data => data as Cart
-	);
+	).then((data: Cart) => {
+		if (!data.id) return { "products": [] } satisfies AnonymousCart;
+		return data;
+	});
 }
