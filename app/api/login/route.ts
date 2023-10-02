@@ -26,10 +26,10 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	let found_user: User;
-	const unique_finder = entries.username_or_email.includes("@")
+	let unique_finder = entries.username_or_email.includes("@")
 		? { "email": entries.username_or_email }
 		: { "username": entries.username_or_email };
-	const response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
+	let response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
 		.then(user => {
 			found_user = user;
 			return NextResponse.json(user);
