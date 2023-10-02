@@ -1,12 +1,14 @@
-import { infer as extract, number, object } from "zod";
+import { infer as extract, string, object } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_operator } from "@api/lib/operator";
 
-const body_schema = object({ "user_id": number() });
-
+const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
+const body_schema = object({
+	"auth_token": string().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE)
+});
 type Body = extract<typeof body_schema>;
 
 export async function POST(request: NextRequest): Promise<EndpointResponse> {
