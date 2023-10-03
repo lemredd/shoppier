@@ -8,7 +8,11 @@ interface AnonymousCart {
 	products: Omit<CartProduct, "id">[]
 }
 
-type UserCart = Cart | AnonymousCart;
+interface AuthenticatedUserCart extends Cart {
+	products: CartProduct[]
+}
+
+type UserCart = AuthenticatedUserCart | AnonymousCart;
 
 export default async function get_user_cart(): Promise<UserCart> {
 	const auth_token = cookies().get("auth")?.value;
@@ -18,7 +22,7 @@ export default async function get_user_cart(): Promise<UserCart> {
 		"body": JSON.stringify({ auth_token })
 	}).then(
 		res => res.json()
-	).then((data: Cart) => {
+	).then((data: AuthenticatedUserCart) => {
 		if (!data.id) return { "products": [] } satisfies AnonymousCart;
 		return data;
 	});

@@ -41,7 +41,6 @@ model Cart {
   products     CartProduct[]
 }
 
-// TODO: consider anonymous carts
 model CartProduct {
   id        Int     @id @default(autoincrement())
   quantity  Int
