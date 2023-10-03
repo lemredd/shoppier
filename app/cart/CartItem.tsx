@@ -9,6 +9,7 @@ interface Props {
 }
 
 function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">): React.ReactElement {
+	// TODO: consider anonymous cart
 	function update(event: FormEvent): void {
 		event.preventDefault();
 
