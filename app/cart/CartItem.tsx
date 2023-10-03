@@ -15,11 +15,18 @@ function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">
 		const form_data = new FormData(event.target as HTMLFormElement);
 	}
 
+	function delete_cart_item(): void {
+		console.log();
+	}
+
 	return (
-		<form onSubmit={update}>
-			<label>Quantity: <input type="number" defaultValue={quantity} /></label>
-			<input type="submit" value="Update" name="quantity" />
-		</form>
+		<>
+			<form onSubmit={update}>
+				<label>Quantity: <input type="number" defaultValue={quantity} /></label>
+				<input type="submit" value="Update" name="quantity" />
+				<button type="button" onClick={delete_cart_item}>Remove</button>
+			</form>
+		</>
 	);
 }
 
