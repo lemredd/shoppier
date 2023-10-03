@@ -43,15 +43,13 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	const response = product_operator.update({
+	const response = cart_item_operator.update({
 		"where": { id },
 		"data": {
-			...entries,
-			"stock": Number(entries.stock),
-			"price": Number(entries.price)
+			"quantity": Number(entries.quantity)
 		}
 	}).then(
-		product => NextResponse.json(product)
+		cart_item => NextResponse.json(cart_item)
 	).catch(
 		e => NextResponse.json(e, { "status": 422 })
 	);
