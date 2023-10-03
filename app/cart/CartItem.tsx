@@ -13,6 +13,13 @@ function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">
 		event.preventDefault();
 
 		const form_data = new FormData(event.target as HTMLFormElement);
+
+		// TODO: show error on UI
+		// TODO: show success message on UI
+		fetch(`/api/cart_item/${id}`, {
+			"method": "PATCH",
+			"body": form_data
+		}).catch(console.error);
 	}
 
 	function delete_cart_item(): void {
@@ -21,9 +28,9 @@ function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">
 
 	return (
 		<>
-			<form onSubmit={update}>
-				<label>Quantity: <input type="number" defaultValue={quantity} /></label>
-				<input type="submit" value="Update" name="quantity" />
+			<form onSubmit={update} method="PATCH">
+				<label>Quantity: <input type="number" name="quantity" defaultValue={quantity} /></label>
+				<input type="submit" value="Update" />
 				<button type="button" onClick={delete_cart_item}>Remove</button>
 			</form>
 		</>
