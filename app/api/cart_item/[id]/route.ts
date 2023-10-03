@@ -1,12 +1,10 @@
+import { cookies } from "next/headers";
+import { object, output, string } from "zod";
 import { NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
-import {
-	product_creation_schema as product_modification_schema,
-	type ProductCreationFormEntries as ProductModificationFormEntries
-} from "@api/lib/types";
 
-import { product_operator } from "@api/lib/operator";
+import { cart_item_operator } from "@api/lib/operator";
 
 interface Context {
 	params: { id: string }
@@ -17,22 +15,18 @@ const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
 	{ "status": 422 }
 );
 
-export async function GET(request: Request, context: Context): Promise<EndpointResponse> {
-	const auth = request.headers.get("Authorization");
-	console.log(auth);
-	const id = Number(context.params.id);
-	if (isNaN(id)) return respond_if_invalid_id();
-
-	const response = await product_operator.findUniqueOrThrow({ "where": { id } })
-		.then(product => NextResponse.json(product))
-		// TODO: make error shape similar to `ZodError`
-		// TODO: make error status identifier
-		.catch(e => NextResponse.json(e, { "status": 422 }));
-
-	return response;
-}
+// TODO: centralize error message
+const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
+const authorization_schema = string().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE);
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
+	const auth = cookies().get("auth")?.value;
+	try {
+		authorization_schema.parse(auth);
+	} catch(e) {
+		return NextResponse.json(e, { "status": 401 });
+	}
+
 	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
