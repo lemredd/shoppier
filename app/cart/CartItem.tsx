@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 import type { CartProduct } from "@prisma/client";
 
@@ -9,14 +9,16 @@ interface Props {
 }
 
 function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">): React.ReactElement {
-	function update(): void {
-		console.log;
+	function update(event: FormEvent): void {
+		event.preventDefault();
+
+		const form_data = new FormData(event.target as HTMLFormElement);
 	}
 
 	return (
-		<form>
+		<form onSubmit={update}>
 			<label>Quantity: <input type="number" defaultValue={quantity} /></label>
-			<input type="submit" value="Update" onClick={update} />
+			<input type="submit" value="Update" name="quantity" />
 		</form>
 	);
 }
