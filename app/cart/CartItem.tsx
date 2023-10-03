@@ -27,7 +27,8 @@ export default function CartItem({ item }: Props): React.ReactElement {
 	return (
 		<li>
 			<h1>{item.id}</h1>
-			<EditCartItemForm id={item.id} quantity={item.quantity} />
+			<button onClick={(): void => set_is_editing(!is_editing)}>{!is_editing ? "Modify" : "Cancel"}</button>
+			{is_editing && <EditCartItemForm id={item.id} quantity={item.quantity} />}
 		</li>
 	);
 }
