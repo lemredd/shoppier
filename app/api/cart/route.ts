@@ -43,7 +43,10 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 		}));
 	}
 	const response = cart_operator.findUniqueOrThrow({
-		"where": { "user_id": user!.id }
+		"where": { "user_id": user!.id },
+		"include": {
+			"products": true
+		}
 	}).then(
 		cart => NextResponse.json(cart)
 	).catch(create_cart);
