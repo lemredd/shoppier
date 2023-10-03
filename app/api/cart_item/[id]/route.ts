@@ -58,13 +58,20 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 }
 
 export async function DELETE(_request: Request, context: Context): Promise<EndpointResponse> {
+	const auth = cookies().get("auth")?.value;
+	try {
+		authorization_schema.parse(auth);
+	} catch(e) {
+		return NextResponse.json(e, { "status": 401 });
+	}
+
 	const id = Number(context.params.id);
 	if (isNaN(id)) return respond_if_invalid_id();
 
-	const response = await product_operator.delete({
+	const response = await cart_item_operator.delete({
 		"where": { id }
 	}).then(
-		product => NextResponse.json(product)
+		cart_item => NextResponse.json(cart_item)
 	).catch(
 		e => NextResponse.json(e, { "status": 422 })
 	);
