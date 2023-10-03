@@ -18,6 +18,10 @@ const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
 // TODO: centralize error message
 const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
 const authorization_schema = string().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE);
+const cart_item_modification_entries_schema = object({
+	"quantity": string().refine(value => !isNaN(Number(value)), "Quantity must be a number.")
+});
+type CartItemModificationEntries = output<typeof cart_item_modification_entries_schema>;
 
 export async function PATCH(request: Request, context: Context): Promise<EndpointResponse> {
 	const auth = cookies().get("auth")?.value;
@@ -31,10 +35,10 @@ export async function PATCH(request: Request, context: Context): Promise<Endpoin
 	if (isNaN(id)) return respond_if_invalid_id();
 
 	const form_data = await request.formData();
-	const entries = Object.fromEntries(form_data) as ProductModificationFormEntries;
+	const entries = Object.fromEntries(form_data) as CartItemModificationEntries;
 
 	try {
-		product_modification_schema.parse(entries);
+		cart_item_modification_entries_schema.parse(entries);
 	} catch (e) {
 		return NextResponse.json(e, { "status": 422 });
 	}
