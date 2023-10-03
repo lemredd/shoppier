@@ -8,6 +8,7 @@ import { cart_operator, user_operator } from "@api/lib/operator";
 
 const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
 const body_schema = object({
+	// TODO: unwrap in object schema
 	"auth_token": string().optional().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE)
 });
 type Body = extract<typeof body_schema>;
@@ -16,6 +17,7 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	const body = request.body;
 	if (!body) return NextResponse.json("Not enough data.", { "status": 422 });
 
+	// TODO: get cookie directly.
 	const reader = body.getReader();
 	const { value } = await reader.read();
 	const decoded_body = JSON.parse(new TextDecoder().decode(value)) as Body;
