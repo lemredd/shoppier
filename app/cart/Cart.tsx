@@ -15,9 +15,11 @@ export default function Cart({ cart }: Props): React.ReactElement {
 		localStorage.setItem("cart", JSON.stringify(cart));
 	}
 
+	const { products } = cart;
 	return (
 		<>
-			{cart.products.length && cart.products.map(product => (
+			{is_anonymous && <p>You are not currently logged in. Items you add in your cart will be stored in the browser.</p>}
+			{products.length && products.map(product => (
 				<CartItem key={product.id} item={product} />
 			)) || "You have no items in your cart yet."}
 		</>
