@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_item_operator } from "@api/lib/operator";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@/app/lib/constants";
 
 interface Context {
 	params: { id: string }
@@ -15,8 +16,6 @@ const respond_if_invalid_id = (): EndpointResponse => NextResponse.json(
 	{ "status": 422 }
 );
 
-// TODO: centralize error message
-const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
 const authorization_schema = string().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE);
 const cart_item_modification_entries_schema = object({
 	"quantity": string().refine(value => !isNaN(Number(value)), "Quantity must be a number.")
