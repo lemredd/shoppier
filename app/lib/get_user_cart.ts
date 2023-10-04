@@ -15,7 +15,7 @@ interface AuthenticatedUserCart extends Cart {
 type UserCart = AuthenticatedUserCart | AnonymousCart;
 
 export default async function get_user_cart(): Promise<UserCart> {
-	const auth_token = cookies().get("auth")?.value; // TODO: use directly on route handler
+	const auth_token = cookies().get("auth")?.value; // Until server actions become stable (currently experimental), this cookie getter will always be called in a layout/page.
 	return await fetch(`${SERVER_URL}/api/cart`, {
 		"method": "POST",
 		"headers": { "content-type": "application/json" },
