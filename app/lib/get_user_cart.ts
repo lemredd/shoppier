@@ -12,7 +12,8 @@ interface AuthenticatedUserCart extends Cart {
 	products: CartProduct[]
 }
 
-type UserCart = AuthenticatedUserCart | AnonymousCart;
+// TODO: centralize type
+export type UserCart = AuthenticatedUserCart | AnonymousCart;
 
 export default async function get_user_cart(): Promise<UserCart> {
 	const auth_token = cookies().get("auth")?.value; // Until server actions become stable (currently experimental), this cookie getter will always be called in a layout/page.
