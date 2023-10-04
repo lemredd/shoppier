@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_item_operator } from "@api/lib/operator";
-import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@/app/lib/constants";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@api/lib/constants";
 
 interface Context {
 	params: { id: string }
