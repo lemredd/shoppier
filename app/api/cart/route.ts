@@ -6,6 +6,7 @@ import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_operator, user_operator } from "@api/lib/operator";
 
+// TODO: centralize error message
 const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
 const body_schema = object({
 	"auth_token": string().optional().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE)
