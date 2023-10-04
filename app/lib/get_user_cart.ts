@@ -20,10 +20,7 @@ export default async function get_user_cart(): Promise<UserCart> {
 		"method": "POST",
 		"headers": { "content-type": "application/json" },
 		"body": JSON.stringify({ auth_token })
-	}).then(
-		res => res.json()
-	).then((data: AuthenticatedUserCart) => {
-		if (!data.id) return { "products": [] } satisfies AnonymousCart;
-		return data;
-	});
+	})
+		.then(res => res.json())
+		.then(data => data as UserCart);
 }
