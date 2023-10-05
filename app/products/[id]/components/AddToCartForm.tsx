@@ -2,11 +2,14 @@
 
 import { FormEvent, useState } from "react";
 
+import type { UserCart } from "@/app/lib/get_user_cart";
 import { Cart } from "@prisma/client";
 
 interface Props {
 	id: number
-	cart: Cart
+	cart: UserCart
+}
+
 }
 
 export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
