@@ -11,6 +11,10 @@ interface Props {
 	cart: UserCart
 }
 
+function add_item_to_anonymous_cart(form_data: FormData): void {
+	const anonymous_cart = JSON.parse(localStorage.getItem("cart")!) as AnonymousCart
+		|| { "products": [] };
+	localStorage.setItem("cart", JSON.stringify(anonymous_cart));
 }
 
 export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
