@@ -4,8 +4,9 @@ import type { Cart, CartProduct } from "@prisma/client";
 
 import { SERVER_URL } from "@app/lib/constants";
 
-interface AnonymousCart {
-	products: Omit<CartProduct, "cartId">[]
+export type AnonymousCartProduct = Omit<CartProduct, "cartId" | "id">
+export interface AnonymousCart {
+	products: AnonymousCartProduct[]
 }
 
 interface AuthenticatedUserCart extends Cart {
