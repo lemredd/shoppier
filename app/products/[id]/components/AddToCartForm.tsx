@@ -2,8 +2,9 @@
 
 import { FormEvent, useState } from "react";
 
-import type { UserCart } from "@/app/lib/get_user_cart";
-import { Cart } from "@prisma/client";
+import type { Cart } from "@prisma/client";
+
+import type { AnonymousCart, UserCart } from "@/app/lib/get_user_cart";
 
 interface Props {
 	id: number
@@ -19,11 +20,20 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 	function add_to_cart(event: FormEvent): void {
 		event.preventDefault();
 		const form_data = new FormData(event.target as HTMLFormElement);
+		if (is_anonymous) {
+			add_item_to_anonymous_cart(form_data);
+			return;
+		}
 
 		fetch("/api/cart/add_item", {
 			"method": "POST",
 			"body": form_data
-		}).then(console.log).catch(console.error);
+		}).then(
+			res => res.json()
+		).then(data => {
+			if ("name" in data && "issues" in data) console.error(data);
+			return data as UserCart;
+		}).catch(console.error);
 	}
 
 	return (
