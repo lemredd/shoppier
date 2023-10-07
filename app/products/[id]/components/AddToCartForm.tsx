@@ -17,6 +17,10 @@ function add_item_to_anonymous_cart(form_data: FormData): void {
 	form_data.delete("cart_id");
 	const entries = Object.fromEntries(form_data);
 
+	anonymous_cart.products.push({
+		"quantity": Number(entries.quantity),
+		"productId": Number(entries.product_id)
+	});
 	localStorage.setItem("cart", JSON.stringify(anonymous_cart));
 }
 
