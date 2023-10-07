@@ -14,6 +14,9 @@ interface Props {
 function add_item_to_anonymous_cart(form_data: FormData): void {
 	const anonymous_cart = JSON.parse(localStorage.getItem("cart")!) as AnonymousCart
 		|| { "products": [] };
+	form_data.delete("cart_id");
+	const entries = Object.fromEntries(form_data);
+
 	localStorage.setItem("cart", JSON.stringify(anonymous_cart));
 }
 
