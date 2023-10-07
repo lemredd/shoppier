@@ -3,9 +3,10 @@
 import { FormEvent, useState } from "react";
 
 import type { CartProduct } from "@prisma/client";
+import { AnonymousCartProduct } from "@app/lib/get_user_cart";
 
 interface Props {
-	item: CartProduct
+	item: CartProduct | AnonymousCartProduct
 }
 
 function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">): React.ReactElement {
@@ -50,7 +51,7 @@ export default function CartItem({ item }: Props): React.ReactElement {
 	return (
 		<li>
 			{/* TODO: show important (name) of cart item */}
-			<h1>{item.id}</h1>
+			<h1>{item.productId}</h1>
 			<button onClick={(): void => set_is_editing(!is_editing)}>{!is_editing ? "Modify" : "Cancel"}</button>
 			{is_editing && <EditCartItemForm id={item.id} quantity={item.quantity} />}
 		</li>
