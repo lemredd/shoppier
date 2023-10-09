@@ -17,8 +17,10 @@ function EditCartItemForm({ id, quantity, is_anonymous }: EditCartItemFormProps)
 	// TODO: consider anonymous cart
 	function update(event: FormEvent): void {
 		event.preventDefault();
-
 		const form_data = new FormData(event.target as HTMLFormElement);
+		if (is_anonymous) {
+			return;
+		}
 
 		// TODO: show error on UI
 		// TODO: show success message on UI
@@ -32,6 +34,10 @@ function EditCartItemForm({ id, quantity, is_anonymous }: EditCartItemFormProps)
 	function delete_cart_item(): void {
 		// TODO: show error on UI
 		// TODO: show success message on UI
+		if(is_anonymous) {
+			return;
+		}
+
 		fetch(`/api/cart_item/${id}`, {
 			"method": "DELETE"
 		}).catch(console.error);
