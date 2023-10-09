@@ -4,18 +4,12 @@ import { ZodError } from "zod";
 
 import { UserCart } from "@app/lib/types";
 
+import access_anonymous_cart from "@app/lib/access_anonymous_cart";
+
 import CartItem from "./CartItem";
 
 interface Props {
 	cart: UserCart
-}
-
-export function access_anonymous_cart<T>(): T {
-	const cart = JSON.parse(localStorage.getItem("cart")!) as UserCart
-		|| { "products": [] };
-	localStorage.setItem("cart", JSON.stringify(cart));
-
-	return cart as T;
 }
 
 export default function Cart({ cart }: Props): React.ReactElement {
