@@ -11,6 +11,7 @@ export default defineConfig({
 			"./app/**/*.component.test.{ts,tsx}",
 		],
 		"screenshotOnRunFailure": false,
+		"video": false
 	},
 
 	"e2e": {
@@ -20,6 +21,8 @@ export default defineConfig({
 		"specPattern": [
 			"./app/api/**/route.test.ts",
 			"./app/**/page.test.tsx",
-		]
+		],
+		"screenshotOnRunFailure": false,
+		"video": false
 	},
 });
