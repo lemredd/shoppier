@@ -6,6 +6,8 @@ import type { CartProduct } from "@prisma/client";
 
 import type{ AnonymousCart, AnonymousCartProduct } from "@app/lib/types";
 
+import access_anonymous_cart from "@app/lib/access_anonymous_cart";
+
 interface Props {
 	item: CartProduct | AnonymousCartProduct
 }
@@ -20,40 +22,32 @@ function EditCartItemForm({ id, quantity, is_anonymous }: EditCartItemFormProps)
 		event.preventDefault();
 		const form_data = new FormData(event.target as HTMLFormElement);
 		const entries = Object.fromEntries(form_data); // TODO: validate
-		if (is_anonymous) {
-			const anonymous_cart = JSON.parse(localStorage.getItem("cart")!) as AnonymousCart || { "products": [] };
-			const index = anonymous_cart.products.findIndex(item => item.id === id);
-			anonymous_cart.products[index].quantity = Number(entries.quantity);
-
-			localStorage.setItem("cart", JSON.stringify(anonymous_cart));
-			return;
-		}
 
 		// TODO: show error on UI
 		// TODO: show success message on UI
-		fetch(`/api/cart_item/${id}`, {
+		if (!is_anonymous) fetch(`/api/cart_item/${id}`, {
 			"method": "PATCH",
 			"body": form_data
 		}).catch(console.error);
+
+		else access_anonymous_cart<AnonymousCart>(({ products }) => {
+			const index = products.findIndex(item => item.id === id);
+			products[index].quantity = Number(entries.quantity);
+		});
 	}
 
 	// TODO: Show confirmation dialog before deleting;
 	function delete_cart_item(): void {
 		// TODO: show error on UI
 		// TODO: show success message on UI
-		if(is_anonymous) {
-			const anonymous_cart = JSON.parse(localStorage.getItem("cart")!) as AnonymousCart || { "products": [] };
-			const index = anonymous_cart.products.findIndex(item => item.id === id);
-			anonymous_cart.products.splice(index, 1);
-
-			localStorage.setItem("cart", JSON.stringify(anonymous_cart));
-			return;
-
-		}
-
-		fetch(`/api/cart_item/${id}`, {
+		if (!is_anonymous) fetch(`/api/cart_item/${id}`, {
 			"method": "DELETE"
 		}).catch(console.error);
+
+		else access_anonymous_cart<AnonymousCart>(({ products }) => {
+			const index = products.findIndex(item => item.id === id);
+			products.splice(index, 1);
+		});
 	}
 
 	return (
