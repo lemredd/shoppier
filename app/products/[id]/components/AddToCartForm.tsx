@@ -6,22 +6,24 @@ import type { Cart } from "@prisma/client";
 
 import type { AnonymousCart, UserCart } from "@app/lib/types";
 
+import access_anonymous_cart from "@app/lib/access_anonymous_cart";
+
 interface Props {
 	id: number
 	cart: UserCart
 }
 
 function add_item_to_anonymous_cart(form_data: FormData): void {
-	const anonymous_cart = JSON.parse(localStorage.getItem("cart")!) as AnonymousCart
-		|| { "products": [] };
-	form_data.delete("cart_id");
-	const entries = Object.fromEntries(form_data);
+	void access_anonymous_cart<AnonymousCart>(({ products }) => {
+		form_data.delete("cart_id");
+		const entries = Object.fromEntries(form_data); // TODO: validate
 
-	anonymous_cart.products.push({
-		"quantity": Number(entries.quantity),
-		"productId": Number(entries.product_id)
+		products.push({
+			"id": products.length + 1,
+			"productId": Number(entries.product_id),
+			"quantity": Number(entries.quantity)
+		});
 	});
-	localStorage.setItem("cart", JSON.stringify(anonymous_cart));
 }
 
 export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
