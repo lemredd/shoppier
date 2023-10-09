@@ -17,5 +17,9 @@ export default defineConfig({
 		setupNodeEvents(on, config) {
 			// implement node event listeners here
 		},
+		"specPattern": [
+			"./app/api/**/route.test.ts",
+			"./app/**/page.test.tsx",
+		]
 	},
 });
