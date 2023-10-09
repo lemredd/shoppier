@@ -1,20 +1,9 @@
 import { cookies } from "next/headers";
 
-import type { Cart, CartProduct } from "@prisma/client";
-
 import { SERVER_URL } from "@app/lib/constants";
 
-export type AnonymousCartProduct = Omit<CartProduct, "cartId" | "id">
-export interface AnonymousCart {
-	products: AnonymousCartProduct[]
-}
+import { UserCart } from "@app/lib/types";
 
-interface AuthenticatedUserCart extends Cart {
-	products: CartProduct[]
-}
-
-// TODO: centralize type
-export type UserCart = AuthenticatedUserCart | AnonymousCart;
 
 export default async function get_user_cart(): Promise<UserCart> {
 	const auth_token = cookies().get("auth")?.value; // Until server actions become stable (currently experimental), this cookie getter will always be called in a layout/page.
