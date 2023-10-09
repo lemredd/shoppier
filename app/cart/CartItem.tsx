@@ -57,7 +57,7 @@ export default function CartItem({ item }: Props): React.ReactElement {
 			{/* TODO: show important (name) of cart item */}
 			<h1>{item.productId}</h1>
 			<button onClick={(): void => set_is_editing(!is_editing)}>{!is_editing ? "Modify" : "Cancel"}</button>
-			{is_editing && <EditCartItemForm id={item.id} quantity={item.quantity} />}
+			{is_editing && <EditCartItemForm id={item.id} quantity={item.quantity} is_anonymous={"cartId" in item === false} />}
 		</li>
 	);
 }
