@@ -5,8 +5,8 @@ import type { User } from "@prisma/client";
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_operator, user_operator } from "@api/lib/operator";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@api/lib/constants";
 
-const NO_AUTH_TOKEN_PROVIDED_MESSAGE = "You are not currently logged in. Items you add in your cart will be stored in the browser.";
 const body_schema = object({
 	"auth_token": string().optional().refine(value => Boolean(value), NO_AUTH_TOKEN_PROVIDED_MESSAGE)
 });
@@ -43,7 +43,10 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 		}));
 	}
 	const response = cart_operator.findUniqueOrThrow({
-		"where": { "user_id": user!.id }
+		"where": { "user_id": user!.id },
+		"include": {
+			"products": true
+		}
 	}).then(
 		cart => NextResponse.json(cart)
 	).catch(create_cart);

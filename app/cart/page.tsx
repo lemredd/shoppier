@@ -1,10 +1,7 @@
 import get_user_cart from "@app/lib/get_user_cart";
+import Cart from "./Cart";
 
 export default async function Page(): Promise<React.ReactElement> {
 	const cart = await get_user_cart();
-	return (
-		<main>
-			root page
-		</main>
-	);
+	return <Cart cart={cart} />;
 }

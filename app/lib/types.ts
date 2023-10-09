@@ -1,5 +1,7 @@
 import { object, infer as extract, string, number, array } from "zod";
 
+import type { Cart, CartProduct } from "@prisma/client";
+
 export const product_schema = object({
 	"id": number(),
 	"title": string(),
@@ -23,3 +25,17 @@ const products_list_schema = object({
 
 export type Product = extract<typeof product_schema>;
 export type ProductsList = extract<typeof products_list_schema>;
+
+/* cart types */
+export type AnonymousCartProduct = Omit<CartProduct, "cartId" | "id">
+export interface AnonymousCart {
+	products: AnonymousCartProduct[]
+}
+
+interface AuthenticatedUserCart extends Cart {
+	products: CartProduct[]
+}
+
+// TODO: centralize type
+export type UserCart = AuthenticatedUserCart | AnonymousCart;
+

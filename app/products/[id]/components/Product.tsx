@@ -1,4 +1,4 @@
-import { Cart } from "@prisma/client";
+import type { UserCart } from "@/app/lib/types";
 
 import get_product from "@app/products/lib/get_product";
 
@@ -6,7 +6,7 @@ import AddToCartForm from "@app/products/[id]/components/AddToCartForm";
 
 interface Props {
 	id: number
-	cart: Cart
+	cart: UserCart
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
