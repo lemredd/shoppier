@@ -10,6 +10,12 @@ export default defineConfig({
 			"./cypress/component/**/*.test.{ts,tsx}",
 			"./app/**/*.component.test.{ts,tsx}",
 		],
-		"screenshotOnRunFailure": false
+		"screenshotOnRunFailure": false,
+	},
+
+	"e2e": {
+		setupNodeEvents(on, config) {
+			// implement node event listeners here
+		},
 	},
 });
