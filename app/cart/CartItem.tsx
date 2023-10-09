@@ -3,7 +3,8 @@
 import { FormEvent, useState } from "react";
 
 import type { CartProduct } from "@prisma/client";
-import { AnonymousCartProduct } from "@app/lib/types";
+
+import type{ AnonymousCart, AnonymousCartProduct } from "@app/lib/types";
 
 interface Props {
 	item: CartProduct | AnonymousCartProduct
@@ -18,7 +19,13 @@ function EditCartItemForm({ id, quantity, is_anonymous }: EditCartItemFormProps)
 	function update(event: FormEvent): void {
 		event.preventDefault();
 		const form_data = new FormData(event.target as HTMLFormElement);
+		const entries = Object.fromEntries(form_data); // TODO: validate
 		if (is_anonymous) {
+			const anonymous_cart = JSON.parse(localStorage.getItem("cart")!) as AnonymousCart || { "products": [] };
+			const index = anonymous_cart.products.findIndex(item => item.id === id);
+			anonymous_cart.products[index].quantity = Number(entries.quantity);
+
+			localStorage.setItem("cart", JSON.stringify(anonymous_cart));
 			return;
 		}
 
