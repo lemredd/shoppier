@@ -9,6 +9,7 @@ export default defineConfig({
 		"specPattern": [
 			"./cypress/component/**/*.test.{ts,tsx}",
 			"./app/**/*.test.{ts,tsx}",
-		]
+		],
+		"screenshotOnRunFailure": false
 	},
 });
