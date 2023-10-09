@@ -9,7 +9,11 @@ interface Props {
 	item: CartProduct | AnonymousCartProduct
 }
 
-function EditCartItemForm({ id, quantity }: Pick<CartProduct, "id" | "quantity">): React.ReactElement {
+interface EditCartItemFormProps extends Pick<CartProduct, "id" | "quantity"> {
+	is_anonymous: boolean
+}
+
+function EditCartItemForm({ id, quantity, is_anonymous }: EditCartItemFormProps): React.ReactElement {
 	// TODO: consider anonymous cart
 	function update(event: FormEvent): void {
 		event.preventDefault();
