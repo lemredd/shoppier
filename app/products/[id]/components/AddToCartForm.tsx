@@ -18,6 +18,7 @@ function add_item_to_anonymous_cart(form_data: FormData): void {
 	const entries = Object.fromEntries(form_data);
 
 	anonymous_cart.products.push({
+		"id": anonymous_cart.products.length,
 		"quantity": Number(entries.quantity),
 		"productId": Number(entries.product_id)
 	});
