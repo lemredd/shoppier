@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 
 import type { CartProduct } from "@prisma/client";
-import { AnonymousCartProduct } from "@app/lib/get_user_cart";
+import { AnonymousCartProduct } from "@app/lib/types";
 
 interface Props {
 	item: CartProduct | AnonymousCartProduct

@@ -1,4 +1,4 @@
-import type { UserCart } from "@/app/lib/get_user_cart";
+import type { UserCart } from "@/app/lib/types";
 
 import get_product from "@app/products/lib/get_product";
 

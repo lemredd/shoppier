@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 
 import type { Cart } from "@prisma/client";
 
-import type { AnonymousCart, UserCart } from "@/app/lib/get_user_cart";
+import type { AnonymousCart, UserCart } from "@app/lib/types";
 
 interface Props {
 	id: number

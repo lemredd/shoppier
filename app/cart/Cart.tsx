@@ -2,7 +2,7 @@
 
 import { ZodError } from "zod";
 
-import { UserCart } from "@app/lib/get_user_cart";
+import { UserCart } from "@app/lib/types";
 
 import CartItem from "./CartItem";
 
