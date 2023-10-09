@@ -27,7 +27,7 @@ export type Product = extract<typeof product_schema>;
 export type ProductsList = extract<typeof products_list_schema>;
 
 /* cart types */
-export type AnonymousCartProduct = Omit<CartProduct, "cartId" | "id">
+export type AnonymousCartProduct = Omit<CartProduct, "cartId">
 export interface AnonymousCart {
 	products: AnonymousCartProduct[]
 }
