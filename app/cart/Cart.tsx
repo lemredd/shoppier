@@ -9,6 +9,15 @@ import CartItem from "./CartItem";
 interface Props {
 	cart: UserCart
 }
+
+export function access_anonymous_cart<T>(): T {
+	const cart = JSON.parse(localStorage.getItem("cart")!) as UserCart
+		|| { "products": [] };
+	localStorage.setItem("cart", JSON.stringify(cart));
+
+	return cart as T;
+}
+
 export default function Cart({ cart }: Props): React.ReactElement {
 	const is_anonymous = "id" in cart === false;
 	let anonymous_cart_issue;
@@ -16,9 +25,7 @@ export default function Cart({ cart }: Props): React.ReactElement {
 	if (is_anonymous) {
 		const { issues } = is_anonymous && cart as unknown as ZodError; // TODO: this seems ugly. fix it.
 		anonymous_cart_issue = issues[0];
-		cart = JSON.parse(localStorage.getItem("cart")!) as UserCart
-			|| { "products": [] };
-		localStorage.setItem("cart", JSON.stringify(cart));
+		cart = access_anonymous_cart<UserCart>();
 	}
 
 	const { products } = cart;
