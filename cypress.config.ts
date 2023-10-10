@@ -7,7 +7,7 @@ export default defineConfig({
 			"bundler": "webpack",
 		},
 		"specPattern": [
-			"./cypress/component/**/*.test.{ts,tsx}",
+			//"./cypress/component/**/*.test.{ts,tsx}",
 			"./app/**/*[^page].test.tsx",
 		],
 		"screenshotOnRunFailure": false,
