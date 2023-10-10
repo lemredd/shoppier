@@ -51,7 +51,7 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 
 	return (
 		<>
-			<button type="button" onClick={(): void => set_is_adding_item(true)}>Add to cart</button>
+			<button type="button" id="add-to-cart-btn" onClick={(): void => set_is_adding_item(true)}>Add to cart</button>
 			<dialog open={is_adding_item}>
 				<form onSubmit={add_to_cart} method="POST">
 					<input type="hidden" name="cart_id" defaultValue={(cart as Cart).id} />
