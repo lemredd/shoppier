@@ -2,7 +2,7 @@ import { object, infer as extract, string, number, array } from "zod";
 
 import type { Cart, CartProduct } from "@prisma/client";
 
-import { NO_AUTH_TOKEN_PROVIDED_MESSAGE as ANONYMOUS_CART_MESSAGE } from "@api/lib/constants";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE as ANONYMOUS_CART_MESSAGE } from "@app/lib/constants";
 
 // TODO: separate schemas into `@app/lib/schema.ts`
 /* Schemas */

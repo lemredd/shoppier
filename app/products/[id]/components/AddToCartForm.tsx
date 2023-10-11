@@ -8,7 +8,7 @@ import type { Cart } from "@prisma/client";
 import { cart_item_form_data_schema, type AnonymousCart, type UserCart } from "@app/lib/types";
 
 import access_anonymous_cart from "@app/lib/access_anonymous_cart";
-import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@/app/api/lib/constants";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@/app/lib/constants";
 
 interface Props {
 	id: number
