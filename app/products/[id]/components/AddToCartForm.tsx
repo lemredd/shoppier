@@ -13,6 +13,10 @@ interface Props {
 	cart: UserCart
 }
 
+if ("Cypress" in window) {
+	(window as unknown as Window & { access_anonymous_cart: () => unknown }).access_anonymous_cart = access_anonymous_cart;
+}
+
 function add_item_to_anonymous_cart(form_data: FormData): void {
 	void access_anonymous_cart<AnonymousCart>(({ products }) => {
 		form_data.delete("cart_id");
@@ -62,6 +66,7 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 				
 				<button
 					type="button"
+					aria-label="Cancel"
 					onClick={(): void => set_is_adding_item(false)}
 				>
 					cancel
