@@ -21,9 +21,16 @@ const form_data_schema = cart_item_form_data_schema.pick({
 type FormDataEntries = output<typeof form_data_schema>;
 
 function add_item_to_anonymous_cart(form_data: FormData): void {
+	const entries = Object.fromEntries(form_data) as FormDataEntries;
+
+	try {
+		form_data_schema.parse(entries);
+	} catch (e) {
+		console.error(e); // TODO: show in UI
+	}
+
 	void access_anonymous_cart<AnonymousCart>(({ products }) => {
 		form_data.delete("cart_id");
-		const entries = Object.fromEntries(form_data); // TODO: validate
 
 		products.push({
 			"id": products.length + 1,
