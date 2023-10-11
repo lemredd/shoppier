@@ -8,6 +8,7 @@ import type { Cart } from "@prisma/client";
 import { cart_item_form_data_schema, type AnonymousCart, type UserCart } from "@app/lib/types";
 
 import access_anonymous_cart from "@app/lib/access_anonymous_cart";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@/app/api/lib/constants";
 
 interface Props {
 	id: number
@@ -67,6 +68,7 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 		<>
 			<button type="button" aria-label="Add to cart" onClick={(): void => set_is_adding_item(true)}>Add to cart</button>
 			<dialog open={is_adding_item}>
+				{is_anonymous && <p>{NO_AUTH_TOKEN_PROVIDED_MESSAGE}</p>}
 				<form onSubmit={add_to_cart} method="POST">
 					<input type="hidden" name="cart_id" defaultValue={(cart as Cart).id} />
 					<input type="hidden" name="product_id" defaultValue={id} />
