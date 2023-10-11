@@ -1,10 +1,11 @@
 "use client";
 
+import { output } from "zod";
 import { FormEvent, useState } from "react";
 
 import type { Cart } from "@prisma/client";
 
-import type { AnonymousCart, UserCart } from "@app/lib/types";
+import { cart_item_form_data_schema, type AnonymousCart, type UserCart } from "@app/lib/types";
 
 import access_anonymous_cart from "@app/lib/access_anonymous_cart";
 
@@ -13,9 +14,11 @@ interface Props {
 	cart: UserCart
 }
 
-if ("Cypress" in window) {
-	(window as unknown as Window & { access_anonymous_cart: () => unknown }).access_anonymous_cart = access_anonymous_cart;
-}
+const form_data_schema = cart_item_form_data_schema.pick({
+	"product_id": true,
+	"quantity": true
+});
+type FormDataEntries = output<typeof form_data_schema>;
 
 function add_item_to_anonymous_cart(form_data: FormData): void {
 	void access_anonymous_cart<AnonymousCart>(({ products }) => {
