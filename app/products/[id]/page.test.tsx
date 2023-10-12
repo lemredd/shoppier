@@ -3,12 +3,11 @@ const LOCALHOST_URL = `http://localhost:${env.PORT}`;
 
 describe("Page: `/products/[id]`", { env }, () => {
 	it("adds product to anonymous cart", () => {
-		// TODO: make fixture for `product` and intercept
-		const body = {
-			"id": env.PORT
-		} satisfies Pick<Product, "id">;
-		cy.intercept("/api/products/1", { body });
-		cy.visit("/products/1");
+		const id = 1;
+		// TODO: seed database with different products on test environment
+		// I can't seem to simply intercept `/api/products/[id]`...
+		cy.visit(`/products/${id}`);
+
 		cy.get("button[aria-label='Add to cart']").click();
 		cy.get("form input[type=submit]").click();
 
