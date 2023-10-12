@@ -1,17 +1,15 @@
 {
 	"type": "module",
-	"version": "0.4.0-dev",
+	"version": "0.4.0",
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-
 		"test:ui": "cypress open",
 		"test:cmpt": "cypress run --component",
 		"test:route": "npm run start -- --port 7357 & ./node_modules/cypress/bin/cypress run --spec './app/api/**/route.test.ts'",
 		"test:page": "npm run start -- --port 7357 & ./node_modules/cypress/bin/cypress run --spec './app/**/page.test.tsx'",
-
 		"template:remote:add": "git remote add template git@github.com:lemredd/web-template.git",
 		"template:remote:rm": "git remote remove template",
 		"template:checkout": "git checkout -b updated_template",
