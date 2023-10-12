@@ -1,7 +1,5 @@
-import { Product } from "@/app/lib/types";
-
 const env = { "PORT": 7357 };
-const LOCALHOST_URL = "http://localhost:7357";
+const LOCALHOST_URL = `http://localhost:${env.PORT}`;
 
 describe("Page: `/products/[id]`", { env }, () => {
 	it("adds product to anonymous cart", () => {
