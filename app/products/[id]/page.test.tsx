@@ -16,7 +16,12 @@ describe("Page: `/products/[id]`", { env }, () => {
 			const anonymous_cart = JSON.parse(String(localhost.cart)) as Record<string, unknown>;
 
 			expect(anonymous_cart.products).to.have.length(1);
+			const cart_item = cy.wrap(anonymous_cart.products).its(0);
+			const expected_cart_item = { "id": 1, "productId": id, "quantity": 1 };
+			cart_item.should("deep.equal", expected_cart_item);
 		});
 	});
+
+	//TODO: test adding product to authenticated user cart
 });
 
