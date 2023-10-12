@@ -1,9 +1,15 @@
+import { Product } from "@/app/lib/types";
+
 const env = { "PORT": 7357 };
 const LOCALHOST_URL = "http://localhost:7357";
 
 describe("Page: `/products/[id]`", { env }, () => {
 	it("adds product to anonymous cart", () => {
 		// TODO: make fixture for `product` and intercept
+		const body = {
+			"id": env.PORT
+		} satisfies Pick<Product, "id">;
+		cy.intercept("/api/products/1", { body });
 		cy.visit("/products/1");
 		cy.get("button[aria-label='Add to cart']").click();
 		cy.get("form input[type=submit]").click();
