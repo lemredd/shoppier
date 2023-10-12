@@ -1,22 +1,37 @@
 "use client";
 
+import { output } from "zod";
 import { FormEvent, useState } from "react";
 
 import type { Cart } from "@prisma/client";
 
-import type { AnonymousCart, UserCart } from "@app/lib/types";
+import { cart_item_form_data_schema, type AnonymousCart, type UserCart } from "@app/lib/types";
 
 import access_anonymous_cart from "@app/lib/access_anonymous_cart";
+import { NO_AUTH_TOKEN_PROVIDED_MESSAGE } from "@/app/lib/constants";
 
 interface Props {
 	id: number
 	cart: UserCart
 }
 
+const form_data_schema = cart_item_form_data_schema.pick({
+	"product_id": true,
+	"quantity": true
+});
+type FormDataEntries = output<typeof form_data_schema>;
+
 function add_item_to_anonymous_cart(form_data: FormData): void {
+	const entries = Object.fromEntries(form_data) as FormDataEntries;
+
+	try {
+		form_data_schema.parse(entries);
+	} catch (e) {
+		console.error(e); // TODO: show in UI
+	}
+
 	void access_anonymous_cart<AnonymousCart>(({ products }) => {
 		form_data.delete("cart_id");
-		const entries = Object.fromEntries(form_data); // TODO: validate
 
 		products.push({
 			"id": products.length + 1,
@@ -51,8 +66,9 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 
 	return (
 		<>
-			<button type="button" onClick={(): void => set_is_adding_item(true)}>Add to cart</button>
+			<button type="button" aria-label="Add to cart" onClick={(): void => set_is_adding_item(true)}>Add to cart</button>
 			<dialog open={is_adding_item}>
+				{is_anonymous && <p>{NO_AUTH_TOKEN_PROVIDED_MESSAGE}</p>}
 				<form onSubmit={add_to_cart} method="POST">
 					<input type="hidden" name="cart_id" defaultValue={(cart as Cart).id} />
 					<input type="hidden" name="product_id" defaultValue={id} />
@@ -62,6 +78,7 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 				
 				<button
 					type="button"
+					aria-label="Cancel"
 					onClick={(): void => set_is_adding_item(false)}
 				>
 					cancel

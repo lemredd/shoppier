@@ -1,16 +1,10 @@
-import { infer as extract, object, string } from "zod";
+import { infer as extract } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { EndpointResponse } from "@api/lib/types";
+import { cart_item_form_data_schema as form_data_schema } from "@/app/lib/types";
 
 import { cart_item_operator } from "@api/lib/operator";
-import { NO_AUTH_TOKEN_PROVIDED_MESSAGE as ANONYMOUS_CART_MESSAGE } from "@api/lib/constants";
-
-const form_data_schema = object({
-	"cart_id": string().optional().refine(value => !isNaN(Number(value)), ANONYMOUS_CART_MESSAGE),
-	"product_id": string().refine(value => !isNaN(Number(value))),
-	"quantity": string().refine(value => !isNaN(Number(value)))
-});
 
 type FormDataEntries = extract<typeof form_data_schema>;
 
