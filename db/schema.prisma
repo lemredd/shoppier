@@ -18,56 +18,56 @@ model Addresses {
   city    String
   zipcode String
   country String
-  user    Users   @relation(fields: [user_id], references: [id])
+  user    Users  @relation(fields: [user_id], references: [id])
   user_id Int    @unique
 }
 
 model AuthTokens {
   id      Int    @id @default(autoincrement())
-  user    Users   @relation(fields: [user_id], references: [id])
+  user    Users  @relation(fields: [user_id], references: [id])
   user_id Int    @unique
   value   String @unique
 }
 
 model Users {
-  id       Int      @id @default(autoincrement())
-  name     String?
-  email    String   @unique
-  username String?  @unique
-  password String
-  phone    String?
-  addresses  Addresses[]
+  id          Int          @id @default(autoincrement())
+  name        String?
+  email       String       @unique
+  username    String?      @unique
+  password    String
+  phone       String?
+  addresses   Addresses[]
   auth_tokens AuthTokens[]
-  cart     Carts?
+  cart        Carts?
 }
 
 model Carts {
-  id           Int            @id @default(autoincrement())
-  user         Users           @relation(fields: [user_id], references: [id])
-  user_id      Int            @unique
-  products     CartItems[]
+  id       Int         @id @default(autoincrement())
+  user     Users       @relation(fields: [user_id], references: [id])
+  user_id  Int         @unique
+  products CartItems[]
 }
 
 model CartItems {
-  id        Int     @id @default(autoincrement())
-  quantity  Int
-  product   Products @relation(fields: [product_id], references: [id])
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  product    Products @relation(fields: [product_id], references: [id])
   product_id Int
-  cart      Carts    @relation(fields: [cart_id], references: [id])
+  cart       Carts    @relation(fields: [cart_id], references: [id])
   cart_id    Int
 }
 
 model Products {
-  id                 Int            @id @default(autoincrement())
-  title              String
-  description        String
-  brand              String
-  stock              Int
-  price              Int
+  id                  Int         @id @default(autoincrement())
+  title               String
+  description         String
+  brand               String
+  stock               Int
+  price               Int
   discount_percentage Int?
-  rating             Int?
-  category           String? // TODO: make required
-  thumbnail          String? // TODO: make required
-  images             String? // TODO: make required
-  cart_items        CartItems[]
+  rating              Int?
+  category            String? // TODO: make required
+  thumbnail           String? // TODO: make required
+  images              String? // TODO: make required
+  cart_items          CartItems[]
 }
