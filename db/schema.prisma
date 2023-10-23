@@ -51,10 +51,10 @@ model Carts {
 model CartItems {
   id        Int     @id @default(autoincrement())
   quantity  Int
-  product   Products @relation(fields: [productId], references: [id])
-  productId Int
-  cart      Carts    @relation(fields: [cartId], references: [id])
-  cartId    Int
+  product   Products @relation(fields: [product_id], references: [id])
+  product_id Int
+  cart      Carts    @relation(fields: [cart_id], references: [id])
+  cart_id    Int
 }
 
 model Products {
@@ -64,10 +64,10 @@ model Products {
   brand              String
   stock              Int
   price              Int
-  discountPercentage Int?
+  discount_percentage Int?
   rating             Int?
   category           String? // TODO: make required
   thumbnail          String? // TODO: make required
   images             String? // TODO: make required
-  CartProduct        CartItems[]
+  cart_items        CartItems[]
 }
