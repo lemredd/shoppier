@@ -35,7 +35,6 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 		address
 	}) => {
 		const address_to_use: Partial<typeof address> = address;
-		delete address_to_use.geo;
 		const user = {
 			email,
 			username,
@@ -43,6 +42,10 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			phone,
 			password
 		};
+
+		delete address_to_use.geo;
+		delete address_to_use.street;
+		delete address_to_use.suite;
 		const address_creation = { "create": {
 			...address_to_use as typeof address,
 			"name": `${username}'s address`,
@@ -51,6 +54,8 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			"country": "PH"
 		} };
 
+		// I implemented this seed while using SQLite as `datasource.provider`
+		// See first remark on `https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
 		prisma.users.create({
 			"data": { ...user, "addresses": address_creation }
 		}).catch(console.error);
