@@ -11,18 +11,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Address {
+model Addresses {
   id      Int    @id @default(autoincrement())
   street  String
   suite   String
   city    String
   zipcode String
   country String
-  user    User   @relation(fields: [user_id], references: [id])
+  user    Users   @relation(fields: [user_id], references: [id])
   user_id Int    @unique
 }
 
-model User {
+model Users {
   id       Int      @id @default(autoincrement())
   name     String?
   email    String   @unique
@@ -30,27 +30,27 @@ model User {
   password String
   auth_token String @unique
   phone    String?
-  address  Address?
-  cart     Cart?
+  addresses  Addresses?
+  cart     Carts?
 }
 
-model Cart {
+model Carts {
   id           Int            @id @default(autoincrement())
-  user         User           @relation(fields: [user_id], references: [id])
+  user         Users           @relation(fields: [user_id], references: [id])
   user_id      Int            @unique
-  products     CartProduct[]
+  products     CartItems[]
 }
 
-model CartProduct {
+model CartItems {
   id        Int     @id @default(autoincrement())
   quantity  Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Products @relation(fields: [productId], references: [id])
   productId Int
-  cart      Cart    @relation(fields: [cartId], references: [id])
+  cart      Carts    @relation(fields: [cartId], references: [id])
   cartId    Int
 }
 
-model Product {
+model Products {
   id                 Int            @id @default(autoincrement())
   title              String
   description        String
@@ -62,5 +62,5 @@ model Product {
   category           String? // TODO: make required
   thumbnail          String? // TODO: make required
   images             String? // TODO: make required
-  CartProduct        CartProduct[]
+  CartProduct        CartItems[]
 }
