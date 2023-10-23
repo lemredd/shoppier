@@ -11,56 +11,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Address {
+model Addresses {
+  id        Int    @id @default(autoincrement())
+  name      String
+  address_1 String
+  address_2 String
+  city      String
+  zipcode   String
+  country   String
+  user      Users  @relation(fields: [user_id], references: [id])
+  user_id   Int    @unique
+}
+
+model AuthTokens {
   id      Int    @id @default(autoincrement())
-  street  String
-  suite   String
-  city    String
-  zipcode String
-  country String
-  user    User   @relation(fields: [user_id], references: [id])
+  user    Users  @relation(fields: [user_id], references: [id])
   user_id Int    @unique
+  value   String @unique
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  name     String?
-  email    String   @unique
-  username String?  @unique
-  password String
-  auth_token String @unique
-  phone    String?
-  address  Address?
-  cart     Cart?
+model Users {
+  id          Int          @id @default(autoincrement())
+  name        String?
+  email       String       @unique
+  username    String?      @unique
+  password    String
+  phone       String?
+  addresses   Addresses[]
+  auth_tokens AuthTokens[]
+  cart        Carts?
 }
 
-model Cart {
-  id           Int            @id @default(autoincrement())
-  user         User           @relation(fields: [user_id], references: [id])
-  user_id      Int            @unique
-  products     CartProduct[]
+model Carts {
+  id       Int         @id @default(autoincrement())
+  user     Users       @relation(fields: [user_id], references: [id])
+  user_id  Int         @unique
+  products CartItems[]
 }
 
-model CartProduct {
-  id        Int     @id @default(autoincrement())
-  quantity  Int
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  cartId    Int
+model CartItems {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  product    Products @relation(fields: [product_id], references: [id])
+  product_id Int
+  cart       Carts    @relation(fields: [cart_id], references: [id])
+  cart_id    Int
 }
 
-model Product {
-  id                 Int            @id @default(autoincrement())
-  title              String
-  description        String
-  brand              String
-  stock              Int
-  price              Int
-  discountPercentage Int?
-  rating             Int?
-  category           String? // TODO: make required
-  thumbnail          String? // TODO: make required
-  images             String? // TODO: make required
-  CartProduct        CartProduct[]
+model Products {
+  id                  Int         @id @default(autoincrement())
+  title               String
+  description         String
+  brand               String
+  stock               Int
+  price               Int
+  discount_percentage Int?
+  rating              Int?
+  category            String? // TODO: make required
+  thumbnail           String? // TODO: make required
+  images              String? // TODO: make required
+  cart_items          CartItems[]
 }

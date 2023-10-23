@@ -5,23 +5,19 @@ const FAKE_API_URL = "https://jsonplaceholder.typicode.com";
 const { PASSWORD_SALT_ROUNDS } = process.env;
 
 interface FakeUser {
-	// Keys to delete:
-	// - `id`
-	// - `website`
-	// - keys with value type `object`
-	id: number,
+	id: number, // not included in seed
 	name: string,
 	username: string,
 	email: string,
 	address: {
-		street: string,
-		suite: string,
+		street: string, // not included/renamed to `address_1`
+		suite: string, // not included/renamed to `address_2`
 		city: string,
 		zipcode: string,
-		geo: object
+		geo: object // not included in seed
 	},
 	phone: string,
-	website: string,
+	website: string, // not included in seed
 	company: object
 }
 
@@ -39,24 +35,32 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 		address
 	}) => {
 		const address_to_use: Partial<typeof address> = address;
-		delete address_to_use.geo;
 		const user = {
 			email,
 			username,
 			name,
 			phone,
-			password,
-			"auth_token": `${email}_${Date.now()}`
-		};
-		const address_creation = {
-			"create": { ...address_to_use as typeof address, "country": "PH" }
+			password
 		};
 
-		prisma.user.create({
-			"data": { ...user,"address": address_creation }
+		delete address_to_use.geo;
+		delete address_to_use.street;
+		delete address_to_use.suite;
+		const address_creation = { "create": {
+			...address_to_use as typeof address,
+			"name": `${username}'s address`,
+			"address_1": address_to_use.street ?? "foo",
+			"address_2": address_to_use.suite ?? "bar",
+			"country": "PH"
+		} };
+
+		// I implemented this seed while using SQLite as `datasource.provider`
+		// See first remark on `https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
+		prisma.users.create({
+			"data": { ...user, "addresses": address_creation }
 		}).catch(console.error);
 	});
 
-	const all_users = await prisma.user.findMany({ "include": { "address": true } });
+	const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
 	console.log(all_users);
 }
