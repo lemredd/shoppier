@@ -25,13 +25,13 @@ export default async function seed_products(prisma: PrismaClient, skip = 0): Pro
 	fake_products.forEach(product => {
 		const product_to_create = product as Partial<FakeProduct>;
 		delete product_to_create.id;
-		prisma.product.create({
+		prisma.products.create({
 			"data": { ...product_to_create as typeof product, "images": product.images.join(",") }
 		})
 			.catch(console.error);
 	});
 
 	seed_products(prisma, skip + 10).catch(console.error);
-	const all_products = await prisma.product.findMany();
+	const all_products = await prisma.products.findMany();
 	console.log(all_products);
 }

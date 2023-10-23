@@ -52,11 +52,11 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			"create": { ...address_to_use as typeof address, "country": "PH" }
 		};
 
-		prisma.user.create({
-			"data": { ...user,"address": address_creation }
+		prisma.users.create({
+			"data": { ...user, "addresses": address_creation }
 		}).catch(console.error);
 	});
 
-	const all_users = await prisma.user.findMany({ "include": { "address": true } });
+	const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
 	console.log(all_users);
 }
