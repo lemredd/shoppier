@@ -3,13 +3,13 @@ import type { PrismaClient } from "@prisma/client";
 const FAKE_API_URL = "https://dummyjson.com";
 
 interface FakeProduct {
-	id: number
+	id: number // not included in seed
 	title: string
 	description: string
 	brand: string
 	stock: number
 	price: number
-	discountPercentage: number
+	discountPercentage: number // renamed to `discount_percentage`
 	rating: number
 	category: string
 	thumbnail: string
@@ -23,11 +23,14 @@ export default async function seed_products(prisma: PrismaClient, skip = 0): Pro
 		.then(data => data as { products: FakeProduct[] });
 	
 	fake_products.forEach(product => {
-		const product_to_create = product as Partial<FakeProduct>;
+		const product_to_create = product as Partial<FakeProduct> & { discount_percentage: number };
 		delete product_to_create.id;
-		prisma.products.create({
-			"data": { ...product_to_create as typeof product, "images": product.images.join(",") }
-		})
+		product_to_create.discount_percentage = product_to_create.discountPercentage ?? 0;
+		delete product_to_create.discountPercentage;
+		prisma.products.create({ "data": {
+			...product_to_create as typeof product,
+			"images": product.images.join(",")
+		} })
 			.catch(console.error);
 	});
 
