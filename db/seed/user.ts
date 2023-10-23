@@ -5,23 +5,19 @@ const FAKE_API_URL = "https://jsonplaceholder.typicode.com";
 const { PASSWORD_SALT_ROUNDS } = process.env;
 
 interface FakeUser {
-	// Keys to delete:
-	// - `id`
-	// - `website`
-	// - keys with value type `object`
-	id: number,
+	id: number, // not included in seed
 	name: string,
 	username: string,
 	email: string,
 	address: {
-		street: string,
-		suite: string,
+		street: string, // not included/renamed to `address_1`
+		suite: string, // not included/renamed to `address_2`
 		city: string,
 		zipcode: string,
-		geo: object
+		geo: object // not included in seed
 	},
 	phone: string,
-	website: string,
+	website: string, // not included in seed
 	company: object
 }
 
