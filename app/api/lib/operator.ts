@@ -9,5 +9,5 @@ export const {
 	"products": product_operator,
 	"carts": cart_operator,
 	"cartItems": cart_item_operator,
+	"orders": order_operator
 } = client_connector;
-
