@@ -12,15 +12,15 @@ datasource db {
 }
 
 model Addresses {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
   address_1 String
   address_2 String
   city      String
   zipcode   String
   country   String
-  user      Users  @relation(fields: [user_id], references: [id])
-  user_id   Int    @unique
+  user      Users    @relation(fields: [user_id], references: [id])
+  user_id   Int      @unique
   orders    Orders[]
 }
 
@@ -75,19 +75,19 @@ model Products {
 }
 
 model Orders {
-  id                  Int         @id @default(autoincrement())
-  address   Addresses @relation(fields: [address_id], references: [id])
-  address_id Int
-  status   OrderStatuses @relation(fields: [status_id], references: [id])
-  status_id Int
-  subtotal Float
+  id           Int           @id @default(autoincrement())
+  address      Addresses     @relation(fields: [address_id], references: [id])
+  address_id   Int
+  status       OrderStatuses @relation(fields: [status_id], references: [id])
+  status_id    Int
+  subtotal     Float
   shipping_fee Float
-  arrival DateTime
+  arrival      DateTime
 }
 
 model OrderStatuses {
-  id                  Int         @id @default(autoincrement())
-  type String
+  id      Int      @id @default(autoincrement())
+  type    String
   details String
-  order Orders[]
+  order   Orders[]
 }
