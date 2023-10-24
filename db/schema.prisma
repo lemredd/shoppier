@@ -82,3 +82,10 @@ model Orders {
   shipping_fee Float
   arrival DateTime
 }
+
+model OrderStatuses {
+  id                  Int         @id @default(autoincrement())
+  type String
+  details String
+  order Orders[]
+}
