@@ -5,9 +5,9 @@ import { PrismaClient } from "@prisma/client";
 const client_connector = new PrismaClient();
 
 export const {
-	"user": user_operator,
-	"product": product_operator,
-	"cart": cart_operator,
-	"cartProduct": cart_item_operator
+	"users": user_operator,
+	"products": product_operator,
+	"carts": cart_operator,
+	"cartItems": cart_item_operator,
 } = client_connector;
 
