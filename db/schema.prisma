@@ -78,6 +78,8 @@ model Orders {
   id                  Int         @id @default(autoincrement())
   address   Addresses @relation(fields: [address_id], references: [id])
   address_id Int
+  status   OrderStatuses @relation(fields: [status_id], references: [id])
+  status_id Int
   subtotal Float
   shipping_fee Float
   arrival DateTime
