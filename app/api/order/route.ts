@@ -6,7 +6,7 @@ import { order_operator } from "@api/lib/operator";
 
 export async function GET(request: NextRequest): Promise<EndpointResponse> {
 	const auth_token = request.cookies.get("auth");
-	console.log(auth_token);
+	if (!auth_token) return NextResponse.json(null, { "status": 401 });
 	const data = await order_operator.findMany();
 	
 	return NextResponse.json(data);
