@@ -21,6 +21,7 @@ model Addresses {
   country   String
   user      Users  @relation(fields: [user_id], references: [id])
   user_id   Int    @unique
+  orders    Orders[]
 }
 
 model AuthTokens {
@@ -71,4 +72,10 @@ model Products {
   thumbnail           String? // TODO: make required
   images              String? // TODO: make required
   cart_items          CartItems[]
+}
+
+model Orders {
+  id                  Int         @id @default(autoincrement())
+  address   Addresses @relation(fields: [address_id], references: [id])
+  address_id Int
 }
