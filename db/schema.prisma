@@ -12,15 +12,16 @@ datasource db {
 }
 
 model Addresses {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
   address_1 String
   address_2 String
   city      String
   zipcode   String
   country   String
-  user      Users  @relation(fields: [user_id], references: [id])
-  user_id   Int    @unique
+  user      Users    @relation(fields: [user_id], references: [id])
+  user_id   Int      @unique
+  orders    Orders[]
 }
 
 model AuthTokens {
@@ -39,6 +40,7 @@ model Users {
   phone       String?
   addresses   Addresses[]
   auth_tokens AuthTokens[]
+  orders Orders[]
   cart        Carts?
 }
 
@@ -71,4 +73,24 @@ model Products {
   thumbnail           String? // TODO: make required
   images              String? // TODO: make required
   cart_items          CartItems[]
+}
+
+model Orders {
+  id           Int           @id @default(autoincrement())
+  address      Addresses     @relation(fields: [address_id], references: [id])
+  address_id   Int
+  user      Users     @relation(fields: [user_id], references: [id])
+  user_id   Int
+  status       OrderStatuses @relation(fields: [status_id], references: [id])
+  status_id    Int
+  subtotal     Float
+  shipping_fee Float
+  arrival      DateTime
+}
+
+model OrderStatuses {
+  id      Int      @id @default(autoincrement())
+  type    String
+  details String
+  order   Orders[]
 }

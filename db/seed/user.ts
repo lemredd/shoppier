@@ -53,12 +53,17 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			"address_2": address_to_use.suite ?? "bar",
 			"country": "PH"
 		} };
+		const auth_token_creation = { "create": {
+			"value": `${email}_${Date.now()}`
+		} };
 
 		// I implemented this seed while using SQLite as `datasource.provider`
 		// See first remark on `https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
-		prisma.users.create({
-			"data": { ...user, "addresses": address_creation }
-		}).catch(console.error);
+		prisma.users.create({ "data": {
+			...user,
+			"addresses": address_creation,
+			"auth_tokens": auth_token_creation
+		} }).catch(console.error);
 	});
 
 	const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
