@@ -6,6 +6,7 @@ const client_connector = new PrismaClient();
 
 export const {
 	"users": user_operator,
+	"authTokens": auth_token_operator,
 	"products": product_operator,
 	"carts": cart_operator,
 	"cartItems": cart_item_operator,
