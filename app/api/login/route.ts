@@ -52,6 +52,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		);
 		await user_operator.update({
 			"where": unique_finder,
+			//TODO: use `auth_token_operator`
 			"data": { auth_token }
 		}).catch(e => response = NextResponse.json(e, { "status": 500 }));
 		response.cookies.set({
