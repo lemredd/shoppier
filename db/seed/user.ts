@@ -66,6 +66,13 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 		} }).catch(console.error);
 	});
 
+	if (process.env.NODE_ENV === "test") prisma.users.create({ "data": {
+		"username": "TEST_DATA_username",
+		"email": "TEST_DATA@email.com",
+		"password": await encryptor.hash("TEST_DATA_password", Number(PASSWORD_SALT_ROUNDS)),
+		"auth_tokens": { "create": { "value": "TEST_DATA_auth_token" } }
+	} }).catch(console.error);
+
 	const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
 	console.log(all_users);
 }
