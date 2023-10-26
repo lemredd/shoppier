@@ -6,7 +6,7 @@ import type { Users } from "@prisma/client";
 
 import type { EndpointResponse } from "@api/lib/types";
 
-import { user_operator } from "@api/lib/operator";
+import { user_operator, auth_token_operator } from "@api/lib/operator";
 
 const { AUTH_TOKEN_SALT_ROUNDS } = process.env;
 
@@ -55,11 +55,10 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 			`${found_user!.email}_${Date.now()}`,
 			Number(AUTH_TOKEN_SALT_ROUNDS)
 		);
-		await user_operator.update({
-			"where": unique_finder,
-			//TODO: use `auth_token_operator`
-			"data": { auth_token }
-		}).catch(e => response = NextResponse.json(e, { "status": 500 }));
+		await auth_token_operator.create({ "data": {
+			"value": auth_token,
+			"user": { "connect": { "id": found_user!.id } }
+		} }).catch(e => response = NextResponse.json(e, { "status": 500 }));
 		response.cookies.set({
 			"name": "auth",
 			"value": auth_token,
