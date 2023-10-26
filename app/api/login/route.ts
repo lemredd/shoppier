@@ -2,7 +2,7 @@ import encryptor from "bcrypt";
 import { NextResponse } from "next/server";
 import { object, output, string } from "zod";
 
-import type { User } from "@prisma/client";
+import type { Users } from "@prisma/client";
 
 import type { EndpointResponse } from "@api/lib/types";
 
@@ -26,7 +26,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	let found_user: Omit<User, "password"> & Partial<{ password: string }>;
+	let found_user: Omit<Users, "password"> & Partial<{ password: string }>;
 	async function validate_password(found: string): Promise<boolean> {
 		return await encryptor.compare(entries.password, found);
 	}
