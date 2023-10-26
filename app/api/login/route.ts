@@ -52,6 +52,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 
 	if (response.ok) {
 		const auth_token = await encryptor.hash(
+			// TODO: maybe include user agent for added uniqueness
 			`${found_user!.email}_${Date.now()}`,
 			Number(AUTH_TOKEN_SALT_ROUNDS)
 		);
@@ -70,7 +71,6 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		})).catch(
 			e => response = NextResponse.json(e, { "status": 500 })
 		);
-		
 	}
 	return response;
 }
