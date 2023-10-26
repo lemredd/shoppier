@@ -55,9 +55,12 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 			`${found_user!.email}_${Date.now()}`,
 			Number(AUTH_TOKEN_SALT_ROUNDS)
 		);
+		const found_user_connector = {
+			"connect": { "id": found_user!.id }
+		};
 		await auth_token_operator.create({ "data": {
 			"value": auth_token,
-			"user": { "connect": { "id": found_user!.id } }
+			"user": found_user_connector
 		} }).catch(e => response = NextResponse.json(e, { "status": 500 }));
 		response.cookies.set({
 			"name": "auth",
