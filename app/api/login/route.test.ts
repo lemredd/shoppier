@@ -11,5 +11,23 @@ describe("Route `/api/login` - Validation and Errors", () => {
 			expect(response.isOkStatusCode).to.be.false;
 		});
 	});
+
+	it("throws invalid user data error", () => {
+		const body = new FormData();
+		// Non-existent user
+		body.set("username_or_email", "invalid@email.com");
+		body.set("password", "invalid_password");
+		cy.request({
+			"method": "POST",
+			"url": "/api/login",
+			"headers": { "content-type": "multipart/form-data" },
+			body,
+			"failOnStatusCode": false
+		}).then(response => {
+			expect(response.isOkStatusCode).to.be.false;
+			expect(response.status).to.equal(422);
+		});
+
+	});
 });
 
