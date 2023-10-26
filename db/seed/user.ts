@@ -27,7 +27,7 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 		.then(data => data as FakeUser[]);
 
 	const password = await encryptor.hash("password", Number(PASSWORD_SALT_ROUNDS));
-	fake_users.forEach(({
+	if (process.env.NODE_ENV !== "test") fake_users.forEach(({
 		username,
 		name,
 		phone,
