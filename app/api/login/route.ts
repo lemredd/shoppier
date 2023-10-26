@@ -61,14 +61,16 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 		await auth_token_operator.create({ "data": {
 			"value": auth_token,
 			"user": found_user_connector
-		} }).catch(e => response = NextResponse.json(e, { "status": 500 }));
-		response.cookies.set({
+		} }).then(() => response.cookies.set({
 			"name": "auth",
 			"value": auth_token,
 			"httpOnly": true,
 			"sameSite": "strict",
 			"maxAge": 60 * 60 * 24 * 30 // TODO: change duration (currently 1 month)
-		});
+		})).catch(
+			e => response = NextResponse.json(e, { "status": 500 })
+		);
+		
 	}
 	return response;
 }
