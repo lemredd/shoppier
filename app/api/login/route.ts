@@ -33,17 +33,22 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	let unique_finder = entries.username_or_email.includes("@")
 		? { "email": entries.username_or_email }
 		: { "username": entries.username_or_email };
-	let response = await user_operator.findUniqueOrThrow({ "where": unique_finder })
-		.then(async user => {
-			if (!await validate_password(user.password)) return NextResponse.json("Invalid Credentials", { "status": 422 });
+	let response = await user_operator.findUniqueOrThrow({
+		"where": unique_finder
+	}).then(async user => {
+		if (!await validate_password(user.password)) return NextResponse.json(
+			"Invalid Credentials",
+			{ "status": 422 }
+		);
 
-			found_user = user;
-			delete found_user.password;
-			unique_finder = { "email": user.email };
+		found_user = user;
+		delete found_user.password;
+		unique_finder = { "email": user.email };
 
-			return NextResponse.json(found_user);
-		})
-		.catch(e => NextResponse.json(e, { "status": 422 })); // TODO: make error message generator
+		return NextResponse.json(found_user);
+	}).catch(
+		e => NextResponse.json(e, { "status": 422 })
+	); // TODO: make error message generator
 
 	if (response.ok) {
 		const auth_token = await encryptor.hash(
