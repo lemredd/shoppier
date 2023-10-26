@@ -4,7 +4,7 @@ describe("Route `/api/login` - Authentication", () => {
 		cy.request({
 			"method": "POST",
 			"url": "/api/login",
-			"form": true,
+			"headers": { "content-type": "multipart/form-data" },
 			"body": invalid_form_data,
 			"failOnStatusCode": false
 		}).then(response => {
