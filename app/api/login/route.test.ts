@@ -1,4 +1,4 @@
-describe("Route `/api/login` - Authentication", () => {
+describe("Route `/api/login` - Validation and Errors", () => {
 	it("throws validation error", () => {
 		const invalid_form_data = new FormData();
 		cy.request({
