@@ -73,6 +73,7 @@ model Products {
   thumbnail           String? // TODO: make required
   images              String? // TODO: make required
   cart_items          CartItems[]
+  order_items          OrderItems[]
 }
 
 model Orders {
@@ -85,6 +86,16 @@ model Orders {
   subtotal     Float
   shipping_fee Float
   arrival      DateTime
+  order_items OrderItems[]
+}
+
+model OrderItems {
+  id  Int @id @default(autoincrement())
+  quantity Int
+  product    Products @relation(fields: [product_id], references: [id])
+  product_id Int
+  order       Orders    @relation(fields: [order_id], references: [id])
+  order_id    Int
 }
 
 model OrderStatuses {
