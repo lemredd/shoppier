@@ -68,8 +68,24 @@ describe("Route `/api/register` - Validation and Errors", () => {
 		}).then(response => {
 			expect(response.isOkStatusCode).to.be.false;
 		});
-	})
+	});
 });
 
+describe("Route `/api/register` - Authentication", () => {
+	it("registers and authenticates valid user", () => {
+		const body = new FormData();
+		body.set("email","new@email.com");
+		body.set("password","password");
+		body.set("confirm_password","password");
+		cy.request({
+			"method": "POST",
+			"url": "/api/register",
+			"headers": { "content-type": "multipart/form-data" },
+			body,
+		}).then(response => {
+			expect(response.isOkStatusCode).to.be.true;
+			expect(response.headers["set-cookie"]).not.undefined;
+			cy.getCookie("auth").should("not.be.undefined");
+		});
 	});
 });
