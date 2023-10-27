@@ -78,4 +78,22 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
+	// TODO: validate if `form_data.address_id` is found in `Addresses`
+
+	const order_items = found_user_or_error.cart?.products;
+	const response = await order_operator.create({ "data": {
+		"arrival": new Date(), // TODO: this is temporary.
+		"shipping_fee": 50, // TODO: this is temporary.
+		"subtotal": 50, // TODO: this is temporary.
+		"user_id": found_user_or_error.id,
+		"address_id": Number(address_id),
+		"statuses": { "create": { "type": "PENDING", "details": "" } },
+		"order_items": { "create": [...order_items!] }
+	} }).then(
+		order => NextResponse.json(order)
+	).catch(
+		error => NextResponse.json(error, { "status": 500 })
+	);
+
+	return response;
 }
