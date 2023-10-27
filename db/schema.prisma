@@ -66,9 +66,9 @@ model Products {
   description         String
   brand               String
   stock               Int
-  price               Int
-  discount_percentage Int?
-  rating              Int?
+  price               Float
+  discount_percentage Float?
+  rating              Float?
   category            String? // TODO: make required
   thumbnail           String? // TODO: make required
   images              String? // TODO: make required
