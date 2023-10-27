@@ -1,6 +1,6 @@
 const env = { "PORT": 7357 };
 
-describe("Page: `/products/[id]`", { env }, () => {
+describe("Page: `/login`", { env }, () => {
 	const LOCALHOST_URL = `http://localhost:${env.PORT}`;
 
 	it("redirects if logged in already", () => {
