@@ -29,7 +29,7 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	let user: Users;
 	try {
 		user = await user_operator.findFirstOrThrow({
-			"where": { "auth_token": decoded_body.auth_token }
+			"where": { "auth_tokens": { "some": { "value": decoded_body.auth_token } } }
 		});
 	} catch(e) {
 		return NextResponse.json(e, { "status": 422 });
