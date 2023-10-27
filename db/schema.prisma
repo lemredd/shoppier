@@ -40,7 +40,7 @@ model Users {
   phone       String?
   addresses   Addresses[]
   auth_tokens AuthTokens[]
-  orders Orders[]
+  orders      Orders[]
   cart        Carts?
 }
 
@@ -76,21 +76,21 @@ model Products {
 }
 
 model Orders {
-  id           Int           @id @default(autoincrement())
-  address      Addresses     @relation(fields: [address_id], references: [id])
+  id           Int             @id @default(autoincrement())
+  address      Addresses       @relation(fields: [address_id], references: [id])
   address_id   Int
-  user      Users     @relation(fields: [user_id], references: [id]) // TODO: remove (can be included when finding in prisma client)
-  user_id   Int // TODO: remove
-  statuses OrderStatuses[]
+  user         Users           @relation(fields: [user_id], references: [id]) // TODO: remove (can be included when finding in prisma client)
+  user_id      Int // TODO: remove
+  statuses     OrderStatuses[]
   subtotal     Float
   shipping_fee Float
   arrival      DateTime
 }
 
 model OrderStatuses {
-  id      Int      @id @default(autoincrement())
-  type    String
-  details String
-  order   Orders @relation(fields: [order_id], references: [id])
+  id       Int    @id @default(autoincrement())
+  type     String
+  details  String
+  order    Orders @relation(fields: [order_id], references: [id])
   order_id Int
 }
