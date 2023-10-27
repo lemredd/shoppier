@@ -1,7 +1,7 @@
 import { infer as extract, string, object } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
-import type { User } from "@prisma/client";
+import type { Users } from "@prisma/client";
 import type { EndpointResponse } from "@api/lib/types";
 
 import { cart_operator, user_operator } from "@api/lib/operator";
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 		return NextResponse.json(e, { "status": 422 });
 	}
 
-	let user: User;
+	let user: Users;
 	try {
 		user = await user_operator.findFirstOrThrow({
 			"where": { "auth_token": decoded_body.auth_token }

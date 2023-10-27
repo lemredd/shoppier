@@ -1,6 +1,6 @@
 import { object, infer as extract, string, number, array } from "zod";
 
-import type { Cart, CartProduct } from "@prisma/client";
+import type { Carts, CartItems } from "@prisma/client";
 
 import { NO_AUTH_TOKEN_PROVIDED_MESSAGE as ANONYMOUS_CART_MESSAGE } from "@app/lib/constants";
 
@@ -36,13 +36,13 @@ export type Product = extract<typeof product_schema>;
 export type ProductsList = extract<typeof products_list_schema>;
 
 /* cart types */
-export type AnonymousCartProduct = Omit<CartProduct, "cartId">
+export type AnonymousCartProduct = Omit<CartItems, "cartId">
 export interface AnonymousCart {
 	products: AnonymousCartProduct[]
 }
 
-interface AuthenticatedUserCart extends Cart {
-	products: CartProduct[]
+interface AuthenticatedUserCart extends Carts {
+	products: CartItems[]
 }
 
 export type UserCart = AuthenticatedUserCart | AnonymousCart;
