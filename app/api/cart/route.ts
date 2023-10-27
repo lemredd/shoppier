@@ -28,8 +28,9 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 
 	let user: Users;
 	try {
+		const auth_token_finder = { "some": { "value": decoded_body.auth_token } };
 		user = await user_operator.findFirstOrThrow({
-			"where": { "auth_tokens": { "some": { "value": decoded_body.auth_token } } }
+			"where": { "auth_tokens": auth_token_finder }
 		});
 	} catch(e) {
 		return NextResponse.json(e, { "status": 422 });
