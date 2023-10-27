@@ -27,7 +27,7 @@ export default function Cart({ cart }: Props): React.ReactElement {
 		<>
 			{is_anonymous && <p>{anonymous_cart_issue?.message}</p>}
 			{products.length && products.map(product => (
-				<CartItem key={product.productId} item={product} />
+				<CartItem key={product.product_id} item={product} />
 			)) || "You have no items in your cart yet."}
 		</>
 	);
