@@ -41,10 +41,19 @@ const item_ids_validator = array(string().refine(
 export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	const auth_token = request.cookies.get("auth");
 	if (!auth_token) return NextResponse.json(null, { "status": 401 });
+	const product_properties_selections = {
+		"quantity": true,
+		"product_id": true
+	};
+	const cart_inclusions = { "products": {
+		"select": product_properties_selections
+	} };
+	const user_inclusions = {
+		"cart": { "include": cart_inclusions },
+		"addresses": true
+	};
 	const auth_token_inclusions = { "user": {
-		"include": { "cart": {
-			"include": { "products": true }
-		} }
+		"include": user_inclusions
 	} };
 	const found_user_or_error = await auth_token_operator.findUniqueOrThrow({
 		"where": { "value": auth_token.value },
