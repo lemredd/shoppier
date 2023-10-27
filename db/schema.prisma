@@ -79,8 +79,8 @@ model Orders {
   id           Int           @id @default(autoincrement())
   address      Addresses     @relation(fields: [address_id], references: [id])
   address_id   Int
-  user      Users     @relation(fields: [user_id], references: [id])
-  user_id   Int
+  user      Users     @relation(fields: [user_id], references: [id]) // TODO: remove (can be included when finding in prisma client)
+  user_id   Int // TODO: remove
   status       OrderStatuses @relation(fields: [status_id], references: [id])
   status_id    Int
   subtotal     Float
