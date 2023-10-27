@@ -17,7 +17,10 @@ export async function GET(request: NextRequest): Promise<EndpointResponse> {
 		(error: Error) => error
 	);
 
-	if (found_user_or_error instanceof Error) return NextResponse.json(found_user_or_error, { "status": 401 });
+	if (found_user_or_error instanceof Error) return NextResponse.json(
+		found_user_or_error,
+		{ "status": 401 }
+	);
 
 	const response = order_operator.findMany({
 		"where": { "user_id": found_user_or_error.id }
