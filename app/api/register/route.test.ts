@@ -53,6 +53,22 @@ describe("Route `/api/register` - Validation and Errors", () => {
 			expect(response.isOkStatusCode).to.be.false;
 		});
 	});
+
+	it("throws error if email is already used", () => {
+		const body = new FormData();
+		body.set("email", "TEST_DATA@email.com");
+		body.set("password", "password");
+		body.set("confirm_password", "password");
+		cy.request({
+			"method": "POST",
+			"url": "/api/register",
+			"headers": { "content-type": "multipart/form-data" },
+			body,
+			"failOnStatusCode": false
+		}).then(response => {
+			expect(response.isOkStatusCode).to.be.false;
+		});
+	})
 });
 
 	});
