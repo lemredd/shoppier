@@ -30,14 +30,6 @@ export async function GET(request: NextRequest): Promise<EndpointResponse> {
 	return response;
 }
 
-const address_id_validator = string().refine(
-	value => !isNaN(Number(value)),
-	"Please select an option from your saved addresses."
-);
-const item_ids_validator = array(string().refine(
-	value => !isNaN(Number(value)),
-	"Please select an item from your cart."
-));
 export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	const auth_token = request.cookies.get("auth");
 	if (!auth_token) return NextResponse.json(null, { "status": 401 });
@@ -68,7 +60,14 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 		{ "status": 401 }
 	);
 
-	const form_data = await request.formData();
+	const address_id_validator = string().refine(
+		value => !isNaN(Number(value)),
+		"Please select an option from your saved addresses."
+	);
+	const item_ids_validator = array(string().refine(
+		value => !isNaN(Number(value)),
+		"Please select an item from your cart."
+	));const form_data = await request.formData();
 	const address_id = form_data.get("address_id") as output<typeof address_id_validator>;
 	const item_ids = form_data.getAll("item_ids") as output<typeof item_ids_validator>;
 	
