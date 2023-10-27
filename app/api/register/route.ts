@@ -2,7 +2,7 @@ import encryptor from "bcrypt";
 import { NextResponse } from "next/server";
 import { infer as extract, object, string } from "zod";
 
-import { User } from "@prisma/client";
+import { Users } from "@prisma/client";
 
 import type { EndpointResponse } from "@api/lib/types";
 
@@ -31,12 +31,14 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	}
 
 	// TODO: Login after successful register
-	let new_user: Omit<User, "password"> & Partial<{ password: string }>;
+	let new_user: Omit<Users, "password"> & Partial<{ password: string }>;
+	const auth_token = await encryptor.hash(`${entries.email}_${Date.now()}`, Number(AUTH_TOKEN_SALT_ROUNDS));
+	const auth_token_creation = { "create": { "value": auth_token } };
 	const response = await user_operator.create({
 		"data": {
 			"email": entries.email,
 			"password": await encryptor.hash(entries.password, Number(PASSWORD_SALT_ROUNDS)),
-			"auth_token": await encryptor.hash(`${entries.email}_${Date.now()}`, Number(AUTH_TOKEN_SALT_ROUNDS))
+			"auth_tokens": auth_token_creation
 		}
 	}).then(user => {
 		new_user = user;
@@ -49,7 +51,7 @@ export async function POST(request: Request): Promise<EndpointResponse> {
 	if (response.ok) {
 		response.cookies.set({
 			"name": "auth",
-			"value": new_user!.auth_token,
+			"value": auth_token,
 			"httpOnly": true,
 			"sameSite": "strict",
 			"maxAge": 60 * 60 * 24 * 30 // TODO: change duration (currently 1 month)

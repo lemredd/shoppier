@@ -17,6 +17,7 @@ interface FakeProduct {
 }
 
 export default async function seed_products(prisma: PrismaClient, skip = 0): Promise<void> {
+	if (process.env.NODE_ENV === "test") return;
 	if (skip > 100) return;
 	const { "products": fake_products } = await fetch(`${FAKE_API_URL}/products?limit=10&skip=${skip}`)
 		.then(res => res.json())
