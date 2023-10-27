@@ -19,8 +19,8 @@ export async function POST(request: NextRequest): Promise<EndpointResponse> {
 	}
 
 	const response = cart_item_operator.create({ "data": {
-		"cartId": Number(entries.cart_id),
-		"productId": Number(entries.product_id),
+		"cart_id": Number(entries.cart_id),
+		"product_id": Number(entries.product_id),
 		"quantity": Number(entries.quantity)
 	} }).then(
 		cart_item => NextResponse.json(cart_item)
