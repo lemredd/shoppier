@@ -22,12 +22,27 @@ interface FakeUser {
 }
 
 export default async function seed_users(prisma: PrismaClient): Promise<void> {
+	if (process.env.NODE_ENV === "test") {
+		prisma.users.create({ "data": {
+			"username": "TEST_DATA_username",
+			"email": "TEST_DATA@email.com",
+			"password": await encryptor.hash("TEST_DATA_password", Number(PASSWORD_SALT_ROUNDS)),
+			"auth_tokens": { "create": { "value": "TEST_DATA_auth_token" } },
+			
+		} }).catch(console.error);
+
+		const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
+		console.log(all_users);
+
+		return;
+	}
+
 	const fake_users = await fetch(`${FAKE_API_URL}/users`)
 		.then(res => res.json())
 		.then(data => data as FakeUser[]);
 
 	const password = await encryptor.hash("password", Number(PASSWORD_SALT_ROUNDS));
-	if (process.env.NODE_ENV !== "test") fake_users.forEach(({
+	fake_users.forEach(({
 		username,
 		name,
 		phone,
@@ -65,13 +80,6 @@ export default async function seed_users(prisma: PrismaClient): Promise<void> {
 			"auth_tokens": auth_token_creation
 		} }).catch(console.error);
 	});
-
-	if (process.env.NODE_ENV === "test") prisma.users.create({ "data": {
-		"username": "TEST_DATA_username",
-		"email": "TEST_DATA@email.com",
-		"password": await encryptor.hash("TEST_DATA_password", Number(PASSWORD_SALT_ROUNDS)),
-		"auth_tokens": { "create": { "value": "TEST_DATA_auth_token" } }
-	} }).catch(console.error);
 
 	const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
 	console.log(all_users);
