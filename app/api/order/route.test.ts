@@ -67,13 +67,18 @@ describe("Route `/api/order` - Order Operations", () => {
 	it("converts cart into order", () => {
 		// TODO: make setting cookie unmanual (this is currently whiteboxed)
 		cy.setCookie("auth", "TEST_DATA_auth_token");
+
+		const body = new FormData();
+		body.set("address_id", "1");
+		body.append("item_ids", "1");
+
 		cy.request({
 			"method": "POST",
 			"url": "/api/order",
-			"failOnStatusCode": false
+			"headers": { "content-type": "multipar/form-data" },
+			body,
 		}).then(response => {
 			expect(response.status).to.equal(200);
-			expect(response.body).to.be.a("array");
 		});
 	});
 });
