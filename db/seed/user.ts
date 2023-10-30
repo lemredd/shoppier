@@ -23,12 +23,20 @@ interface FakeUser {
 
 export default async function seed_users(prisma: PrismaClient): Promise<void> {
 	if (process.env.NODE_ENV === "test") {
+		const address_creation = { "create": {
+			"name": "TEST_DATA_address",
+			"address_1": "Address 1",
+			"address_2": "Address 2",
+			"city": "City",
+			"country": "Country",
+			"zipcode": "1111",
+		} };
 		prisma.users.create({ "data": {
 			"username": "TEST_DATA_username",
 			"email": "TEST_DATA@email.com",
 			"password": await encryptor.hash("TEST_DATA_password", Number(PASSWORD_SALT_ROUNDS)),
 			"auth_tokens": { "create": { "value": "TEST_DATA_auth_token" } },
-			
+			"addresses": address_creation
 		} }).catch(console.error);
 
 		const all_users = await prisma.users.findMany({ "include": { "addresses": true } });
