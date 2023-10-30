@@ -38,7 +38,20 @@ export default async function seed_products(prisma: PrismaClient, skip = 0): Pro
 		}
 
 		const all_products = await prisma.products.findMany();
-		console.log(all_products);
+		console.log("Test data: Products created", all_products);
+		const cart_user_connection = {
+			"connect": { "id": 1 }
+		};
+		const cart_item_creation = { "create": {
+			"product": { "connect": { "id": all_products[0].id } },
+			"quantity": 1
+		} };
+		prisma.carts.create({ "data": {
+			"user": cart_user_connection,
+			"products": cart_item_creation
+		} }).then(
+			cart => console.log(`Cart for user with ID ${cart.user_id} created with cart item`)
+		).catch(console.error);
 		return;
 	}
 
