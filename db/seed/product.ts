@@ -17,7 +17,44 @@ interface FakeProduct {
 }
 
 export default async function seed_products(prisma: PrismaClient, skip = 0): Promise<void> {
-	if (process.env.NODE_ENV === "test") return;
+	if (process.env.NODE_ENV === "test") {
+		const product_1 = {
+			"title": "TEST_DATA_product1",
+			"description": "TEST_DATA_product1",
+			"brand": "TEST_DATA_product1",
+			"stock": 10,
+			"price": 10,
+		};
+		const product_2 = {
+			"title": "TEST_DATA_product1",
+			"description": "TEST_DATA_product1",
+			"brand": "TEST_DATA_product1",
+			"stock": 10,
+			"price": 10,
+		};
+		const products = [product_1, product_2];
+		for (const product of products) {
+			await prisma.products.create({ "data": product }).catch(console.error);
+		}
+
+		const all_products = await prisma.products.findMany();
+		console.log("Test data: Products created", all_products);
+		const cart_user_connection = {
+			"connect": { "id": 1 }
+		};
+		const cart_item_creation = { "create": {
+			"product": { "connect": { "id": all_products[0].id } },
+			"quantity": 1
+		} };
+		prisma.carts.create({ "data": {
+			"user": cart_user_connection,
+			"products": cart_item_creation
+		} }).then(
+			cart => console.log(`Cart for user with ID ${cart.user_id} created with cart item`)
+		).catch(console.error);
+		return;
+	}
+
 	if (skip > 100) return;
 	const { "products": fake_products } = await fetch(`${FAKE_API_URL}/products?limit=10&skip=${skip}`)
 		.then(res => res.json())
@@ -31,8 +68,7 @@ export default async function seed_products(prisma: PrismaClient, skip = 0): Pro
 		prisma.products.create({ "data": {
 			...product_to_create as typeof product,
 			"images": product.images.join(",")
-		} })
-			.catch(console.error);
+		} }).catch(console.error);
 	});
 
 	seed_products(prisma, skip + 10).catch(console.error);

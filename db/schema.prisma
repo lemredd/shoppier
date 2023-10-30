@@ -15,7 +15,7 @@ model Addresses {
   id        Int      @id @default(autoincrement())
   name      String
   address_1 String
-  address_2 String
+  address_2 String?
   city      String
   zipcode   String
   country   String
@@ -40,7 +40,7 @@ model Users {
   phone       String?
   addresses   Addresses[]
   auth_tokens AuthTokens[]
-  orders Orders[]
+  orders      Orders[]
   cart        Carts?
 }
 
@@ -66,31 +66,42 @@ model Products {
   description         String
   brand               String
   stock               Int
-  price               Int
-  discount_percentage Int?
-  rating              Int?
+  price               Float
+  discount_percentage Float?
+  rating              Float?
   category            String? // TODO: make required
   thumbnail           String? // TODO: make required
   images              String? // TODO: make required
   cart_items          CartItems[]
+  order_items          OrderItems[]
 }
 
 model Orders {
-  id           Int           @id @default(autoincrement())
-  address      Addresses     @relation(fields: [address_id], references: [id])
+  id           Int             @id @default(autoincrement())
+  address      Addresses       @relation(fields: [address_id], references: [id])
   address_id   Int
-  user      Users     @relation(fields: [user_id], references: [id])
-  user_id   Int
-  status       OrderStatuses @relation(fields: [status_id], references: [id])
-  status_id    Int
+  user         Users           @relation(fields: [user_id], references: [id]) // TODO: remove (can be included when finding in prisma client)
+  user_id      Int // TODO: remove
+  statuses     OrderStatuses[]
   subtotal     Float
   shipping_fee Float
   arrival      DateTime
+  order_items OrderItems[]
+}
+
+model OrderItems {
+  id  Int @id @default(autoincrement())
+  quantity Int
+  product    Products @relation(fields: [product_id], references: [id])
+  product_id Int
+  order       Orders    @relation(fields: [order_id], references: [id])
+  order_id    Int
 }
 
 model OrderStatuses {
-  id      Int      @id @default(autoincrement())
-  type    String
-  details String
-  order   Orders[]
+  id       Int    @id @default(autoincrement())
+  type     String
+  details  String
+  order    Orders @relation(fields: [order_id], references: [id])
+  order_id Int
 }

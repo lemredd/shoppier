@@ -3,7 +3,7 @@
 import { output } from "zod";
 import { FormEvent, useState } from "react";
 
-import type { Cart } from "@prisma/client";
+import type { Carts } from "@prisma/client";
 
 import { cart_item_form_data_schema, type AnonymousCart, type UserCart } from "@app/lib/types";
 
@@ -70,7 +70,7 @@ export default function AddToCartForm({ id, cart }: Props): React.ReactElement {
 			<dialog open={is_adding_item}>
 				{is_anonymous && <p>{NO_AUTH_TOKEN_PROVIDED_MESSAGE}</p>}
 				<form onSubmit={add_to_cart} method="POST">
-					<input type="hidden" name="cart_id" defaultValue={(cart as Cart).id} />
+					<input type="hidden" name="cart_id" defaultValue={(cart as Carts).id} />
 					<input type="hidden" name="product_id" defaultValue={id} />
 					<input type="number" name="quantity" defaultValue={1} />
 					<input type="submit" value="Add to Cart" />

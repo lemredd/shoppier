@@ -2,17 +2,17 @@
 
 import { FormEvent, useState } from "react";
 
-import type { CartProduct } from "@prisma/client";
+import type { CartItems } from "@prisma/client";
 
-import type{ AnonymousCart, AnonymousCartProduct } from "@app/lib/types";
+import type{ AnonymousCart, AnonymousCartItem } from "@app/lib/types";
 
 import access_anonymous_cart from "@app/lib/access_anonymous_cart";
 
 interface Props {
-	item: CartProduct | AnonymousCartProduct
+	item: CartItems | AnonymousCartItem
 }
 
-interface EditCartItemFormProps extends Pick<CartProduct, "id" | "quantity"> {
+interface EditCartItemFormProps extends Pick<CartItems, "id" | "quantity"> {
 	is_anonymous: boolean
 }
 
@@ -68,9 +68,9 @@ export default function CartItem({ item }: Props): React.ReactElement {
 	return (
 		<li>
 			{/* TODO: show important (name) of cart item */}
-			<h1>{item.productId}</h1>
+			<h1>{item.product_id}</h1>
 			<button onClick={(): void => set_is_editing(!is_editing)}>{!is_editing ? "Modify" : "Cancel"}</button>
-			{is_editing && <EditCartItemForm id={item.id} quantity={item.quantity} is_anonymous={"cartId" in item === false} />}
+			{is_editing && <EditCartItemForm id={item.id} quantity={item.quantity} is_anonymous={"cart_id" in item === false} />}
 		</li>
 	);
 }
